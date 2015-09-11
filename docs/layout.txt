@@ -1,0 +1,20 @@
+
+* docs
+- all docs explaining shit
+* libs
+- all external libraries interfaces
+- not needed atm
+* tests
+- unit tests
+* models
+- contains sensor models (just init with C++ now ... later maybe read a real model) and config
+* src
+- modules
+--> near space detector
+--> active safety
+- sensors
+--> sensor interfaces -> sonar
+- helpers
+--> 3d layout helper
+- comm
+--> makes the interface available to higher layers and send to lower layers (implement ROS and real etc.)
