@@ -7,6 +7,7 @@ project(active_safety)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+find_package(px4 REQUIRED) 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -59,7 +60,7 @@ find_package(catkin REQUIRED COMPONENTS
 #   Service2.srv
 # )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
 
 ## Generate added messages and services with any dependencies listed here
 #generate_messages(
@@ -86,10 +87,14 @@ catkin_package(
 
 ## Declare a C++ library
 include_directories(libs/)
+include_directories(src/)
+include_directories(models/)
 add_executable(active_safety
    src/main.cpp
    src/interfaces/RosSonarInterface.cpp
    src/interfaces/RosControllerInterface.cpp
+   src/sensors/SonarSensor.cpp
+   src/modules/NearSpaceDetector.cpp
 )
 target_link_libraries(active_safety ${catkin_LIBRARIES})
 
