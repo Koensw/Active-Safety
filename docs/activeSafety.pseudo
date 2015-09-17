@@ -1,0 +1,45 @@
+class ActiveSafety
+{
+	//Implement all functions of the flightcontroller given in flightcontroller.sudo
+	//All flight controller operations run via this component to ensure maximum safety.
+	
+	function getTargetPoint{
+		//Gets the relative location of the given target point.
+	}
+	function getSafetyTargetPoint{
+		//gets the relative location of the target point 
+		//generated to avoid an object.
+	}
+	
+	//extra functions of activeSafety:
+	
+	function setPotentialAt(float potential, float hRadian, float vRadian){
+		//set the potentail at given point around the drone. No knowledge is needed of 
+		//any sensors. sensors should be set logically according to the given point.
+	}
+	function setRangeAt(float range, float hRadian, float vRadian){
+		//same as potential but with range
+	}
+	function setAllPotential(float potential){
+		//sets the potential of all the sensors
+	}
+	function setAllRange(float range){
+		//same with range
+	}
+	
+	_event pathChanged;{
+		//event that ocures whenever the ActiveSafety changes the flying path
+		//to anything but a direct line from the origin point to the target point.
+		//In essence there is no need to even respond to this event but we might
+		//want to log the fact that something is avoided or change the drones
+		//emotional state if it will ever have one.
+	}
+	
+	_event pathBlocked;{
+		//Occures when active safety no longer knows what to do. 
+		//First version might fire this event whenever it has 
+		//prevented bumping into something.
+		//Theoratical safety provider might be so good it 
+		//will never fire this event.
+	}
+}

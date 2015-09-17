@@ -21,9 +21,6 @@ public:
     Point getPosition(){
         return _current;
     }
-    
-    /* Sync the position set with the controller */
-    void sync();
 private:
     void update_position(const px4::vehicle_local_position &pt); 
     

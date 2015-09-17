@@ -1,0 +1,75 @@
+class NearSpaceDetector
+{
+	
+	function getAllSensors(){
+		//returns SonarSensor[] containing all sonar sensors.
+	}
+	function getSensorAt(float hRadian, vRadian){
+		//returns the sensor closest to given horizontal Radian and vertical Radian.
+		//so hRadian and vRadian do not need to be exact.
+	}
+	function getDistanceAt(float hRadian, vRadian){
+		//gets the distance at hRadian, vRadian.
+		//There is no need for this to be a distance measured by one particular sensor.
+		//The overlap of the sensors may give a more precise distance a a particular point.
+	}
+	
+	_event newSensorRepulsion(){
+		//event that ocures when a sonar starts to have a repulsion value.
+		//It returns a sonarSensor object that has a repulsion value.
+		//This is so that a safety system can monitor only those sensors
+		//that actually have something within their range and 
+		//Free memory when nothing is in range of a particular sensor.
+	} 
+	
+	
+	//The publicly available Sensor object.
+	//Used by active safety to avoid objects.
+	class SonarSensor
+	{
+		function getPotential(){
+			//gets the current potential of this sensor
+		}
+		
+		function setPotential(float potential){
+			//Sets the potential of a single sonar sensor.
+			//A higher potential means it reacts more violently to 
+			//An object being within the range of the sensor.
+			//1 means it will keep the object out of range completely at all cost
+			//0 means it will actually not react to the object being in range.
+			// if set to 0.1 it will just slowly drift away from an object when it's in range
+		}
+		
+		function getRange(){
+			//returns the current range.
+		}
+		
+		function setRange(float range){
+			//Sets the respons range of the sensor in meters.
+			//The sensor will not respond to or "detect" anything that is not in range.
+			//Function might not set the range to be this exact range
+		}
+		
+		function getRepulsion(){
+			//Gets the current repulsion value of this sensor.
+			//If nothing is within the set range the repulsion whill be zero.
+			//If the potential is 0 the repulsion will be 0;
+			//Basically this is the "push" value 
+		}
+		
+		function getPosition(){
+			//gets the position of the sensor in horizontal and vertical radians.
+			//so a struct stating (horizontalRadian, verticalRadian)
+		}
+		
+		function getDistance(){
+			//gets the actual measured distance to anything the sensor senses.
+			//within or out of the range of the sensor.
+			//Should only be available to the nearspace detector.
+		}
+		
+		//Probably some detection functions but these should not be available to anything but 
+		//the near space detector itself.
+	}
+
+}

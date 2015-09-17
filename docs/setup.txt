@@ -1,0 +1,18 @@
+DistanceSensor
+- setMinimumRange
+- setRepulsionStrength
+
+- getPotentials
+
+* SonarSensor
+
+NearSpaceDetector
+- registerSensor
+- unregisterSensor
+
+- getDistanceAt()
+- getMinimumDistanceInRange()
+- getPotentials()
+- update
+
+- getAllSensors

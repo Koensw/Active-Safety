@@ -15,19 +15,16 @@ RosControllerInterface::RosControllerInterface(std::string topic){
 
 void RosControllerInterface::setPosition(Point tar){
     _target = tar;
+    
+    geometry_msgs::Point pos;
+    pos.x = _target.x;
+    pos.y = _target.y;
+    pos.z = _target.z;
+    _pub_pos.publish(pos);
 }
 
 void RosControllerInterface::update_position(const px4::vehicle_local_position &pos){
     _current.x = pos.x;
     _current.y = pos.y;
     _current.z = pos.z;
-}
-
-void RosControllerInterface::sync(){
-    geometry_msgs::Point pos;
-    pos.x = _target.x;
-    pos.y = _target.y;
-    pos.z = _target.z;
-    
-    _pub_pos.publish(pos);
 }
