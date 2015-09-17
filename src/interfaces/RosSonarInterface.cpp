@@ -17,6 +17,9 @@ double RosSonarInterface::getDistance(){
 }
 
 void RosSonarInterface::update_information(const sensor_msgs::Range& range){
+    //the sonar is available when we receive positions
+    if(!isAvailable()) set_available(true);
+    
     _range = range.range;
     _min_range = range.min_range;
     _max_range = range.max_range;

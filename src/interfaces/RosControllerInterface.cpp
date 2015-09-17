@@ -2,6 +2,8 @@
 
 #include "geometry_msgs/Point.h"
 
+#include "log.h"
+
 RosControllerInterface::RosControllerInterface(std::string topic){
     _topic = topic;
     
@@ -24,6 +26,9 @@ void RosControllerInterface::setPosition(Point tar){
 }
 
 void RosControllerInterface::update_position(const px4::vehicle_local_position &pos){
+    //the controller is available when we receive positions
+    if(!isAvailable()) set_available(true);
+    
     _current.x = pos.x;
     _current.y = pos.y;
     _current.z = pos.z;

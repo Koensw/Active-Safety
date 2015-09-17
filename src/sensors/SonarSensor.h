@@ -13,7 +13,7 @@
  */
 class SonarSensor : public DistanceSensor{
 public:
-    SonarSensor(SonarInterface *interface): _interface(interface) {};
+    SonarSensor(Pose pose, SonarInterface *interface): DistanceSensor(pose), _interface(interface) {};
     
     /* Returns a single potential at the center of the FOV of the sonar at the expected location */
     std::list<Potential> getPotentials();

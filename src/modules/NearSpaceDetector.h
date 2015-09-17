@@ -13,16 +13,17 @@
  */
 class NearSpaceDetector{
 public:
-    NearSpaceDetector() {};
+    NearSpaceDetector(): _global_min_range(0) {} //default is to disable the near space
+    NearSpaceDetector(double global_min_range): _global_min_range(global_min_range) {};
     
     /* Register and unregister a sensor in the space
      ALERT: the unregister takes care of deleting a DistanceSensor
      */
-    std::list<DistanceSensor*>::const_iterator registerSensor(DistanceSensor*);
-    void unregisterSensor(std::list<DistanceSensor*>::const_iterator);
+    std::list<DistanceSensor*>::iterator registerSensor(DistanceSensor*);
+    void unregisterSensor(std::list<DistanceSensor*>::iterator);
     
     /* Returns all registered sensors */
-    std::list<DistanceSensor*> getSensors(){
+    const std::list<DistanceSensor*> getSensors(){
         return _sensors;
     }
     
@@ -32,9 +33,14 @@ public:
     }
     
     /* Gives the approximate distance at a given location */
-    double getDistanceAt(int hRad, int vRad);
+    double getDistanceAt(double yaw, double pitch);
     /* Gives the minimum distance in a certain area */
-    double getMinimunDistanceInRange(int hRadMin, int vRadMin, int hRadMax, int vRadMax);
+    double getMinimunDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax);
+    
+    /* Set the global minimum distance to act on */
+    void setGlobalMinimumDistance(double global_min_range){
+        _global_min_range = global_min_range;
+    }
     
     /* Updates the potentials with the last sensor information */
     void update();
@@ -45,6 +51,8 @@ private:
     //WARNING: disallow copy
     NearSpaceDetector(const NearSpaceDetector&);
     NearSpaceDetector& operator=(const NearSpaceDetector&);
+    
+    double _global_min_range;
     
     std::list<DistanceSensor*> _sensors;
     std::list<Potential> _potentials;

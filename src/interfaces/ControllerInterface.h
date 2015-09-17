@@ -1,11 +1,13 @@
 #ifndef _BLUEJAY_CONTROLLER_INTERFACE_H_
 #define _BLUEJAY_CONTROLLER_INTERFACE_H_
 
+#include "SystemInterface.h"
+
 /*
  * Interface the controller (output of this module)
  */
 
-class ControllerInterface{
+class ControllerInterface: public SystemInterface{
 public:
     /* Sets the target position for the controller */
     //FIXME: should be in local frame?

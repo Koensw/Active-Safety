@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "geometry.h"
+
 /* 
  * Returns the sensor model of the sonars
  * TODO: This implementation should properly read a model file
@@ -11,6 +13,8 @@
 struct SonarInfo{
     //FIXME: topic is not portable
     std::string topic;
+    
+    Pose pose;
     
     double x;
     double y;
@@ -25,11 +29,11 @@ std::vector<SonarInfo> getSonarModel(){
     std::vector<SonarInfo> sonars;
     SonarInfo sonar1;
     sonar1.topic = "sonar1";
-    sonar1.x = 0.02;
-    sonar1.y = 0;
-    sonar1.z = 0.1;
-    sonar1.hRad = 0;
-    sonar1.vRad = 0;
+    sonar1.pose.position.x = 0;
+    sonar1.pose.position.y = 0.02;
+    sonar1.pose.position.z = 0.1;
+    sonar1.pose.orientation.p = 0;
+    sonar1.pose.orientation.y = 0.5*M_PI;
     sonars.push_back(sonar1);
     
     return sonars;

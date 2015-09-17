@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 2.8.3)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_definitions(-D__PX4_ROS)
 add_definitions(-D__EXPORT=)
 project(active_safety)
@@ -60,7 +59,7 @@ find_package(catkin REQUIRED COMPONENTS
 #   Service2.srv
 # )
 
-set(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 
 ## Generate added messages and services with any dependencies listed here
 #generate_messages(
@@ -91,8 +90,10 @@ include_directories(src/)
 include_directories(models/)
 add_executable(active_safety
    src/main.cpp
+   src/interfaces/TestSonarInterface.cpp
    src/interfaces/RosSonarInterface.cpp
    src/interfaces/RosControllerInterface.cpp
+   src/helpers/Potential.cpp
    src/sensors/SonarSensor.cpp
    src/modules/NearSpaceDetector.cpp
 )
