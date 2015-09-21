@@ -21,6 +21,10 @@ public:
     /* Returns the sonar distance */
     double getDistance();
 private:
+    //WARNING: disallow copy
+    SonarSensor(const SonarSensor&);
+    SonarSensor& operator=(const SonarSensor&);
+    
     SonarInterface *_interface;
 };
 

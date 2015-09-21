@@ -59,7 +59,8 @@ find_package(catkin REQUIRED COMPONENTS
 #   Service2.srv
 # )
 
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Wno-unused-parameter ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 ## Generate added messages and services with any dependencies listed here
 #generate_messages(
@@ -88,16 +89,20 @@ catkin_package(
 include_directories(libs/)
 include_directories(src/)
 include_directories(models/)
-add_executable(active_safety
-   src/main.cpp
-   src/interfaces/TestSonarInterface.cpp
-   src/interfaces/RosSonarInterface.cpp
-   src/interfaces/RosControllerInterface.cpp
-   src/helpers/Potential.cpp
-   src/sensors/SonarSensor.cpp
-   src/modules/NearSpaceDetector.cpp
+add_library(geometry
+    libs/geometry.cpp
 )
-target_link_libraries(active_safety ${catkin_LIBRARIES})
+add_executable(active_safety
+    src/main.cpp
+    src/interfaces/TestSonarInterface.cpp
+    src/interfaces/RosSonarInterface.cpp
+    src/interfaces/RosControllerInterface.cpp
+    src/helpers/Potential.cpp
+    src/sensors/SonarSensor.cpp
+    src/modules/NearSpaceDetector.cpp
+    src/modules/ActiveSafety.cpp
+)
+target_link_libraries(active_safety geometry ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

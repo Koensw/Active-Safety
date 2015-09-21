@@ -16,9 +16,6 @@ public:
     
     /* Gets the current position from the controller */
     virtual Point getPosition() = 0;
-    
-    /* Virtual destructor */
-    virtual ~ControllerInterface() {}
 };
 
 #endif

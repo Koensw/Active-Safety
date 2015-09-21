@@ -41,6 +41,9 @@ public:
     void setGlobalMinimumDistance(double global_min_range){
         _global_min_range = global_min_range;
     }
+    double getGlobalMinimumDistance(){
+        return _global_min_range;
+    }
     
     /* Updates the potentials with the last sensor information */
     void update();

@@ -17,7 +17,6 @@ public:
     virtual double getMinRange() = 0;
     virtual double getMaxRange() = 0;
     
-    /* Virtual destructor */
     virtual ~SonarInterface() {}
 };
 

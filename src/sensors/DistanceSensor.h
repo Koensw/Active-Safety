@@ -12,20 +12,14 @@
  */
 class DistanceSensor{
 public:
-    DistanceSensor(Pose pose): _pose(pose) {}
+    DistanceSensor(Pose pose): _max_range(0), _pose(pose) {}
     
     /* Properties getters/setters */
-    void setMinimumRange(double min_range){
-        _min_range = min_range;
+    void setMaximumRange(double max_range){
+        _max_range = max_range;
     }
-    double getMinimumRange(){
-        return _min_range;
-    }
-    void setRepulsionStrength(double repulsion_strength){
-        _repulsion_strength = repulsion_strength;
-    }
-    double getRepulsionStrength(){
-        return _repulsion_strength;
+    double getMaximumRange(){
+        return _max_range;
     }
     void setPose(Pose pose){
         _pose = pose;
@@ -40,8 +34,11 @@ public:
     /* Virtual destructor */
     virtual ~DistanceSensor() {}
 protected:
-    double _min_range;
-    double _repulsion_strength;
+    //WARNING: disallow copy
+    DistanceSensor(const DistanceSensor&);
+    DistanceSensor& operator=(const DistanceSensor&);
+    
+    double _max_range;
     
     Pose _pose;
     

@@ -15,6 +15,9 @@ public:
     inline bool isAvailable(){
         return _available;
     }
+    
+    /* Virtual destructor */
+    virtual ~SystemInterface() {}
 protected:
     inline void set_available(bool available){
         _available = available;

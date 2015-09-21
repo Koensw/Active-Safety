@@ -16,3 +16,22 @@ NearSpaceDetector
 - update
 
 - getAllSensors
+
+ActiveSafety
+ActiveSafety(NearSpaceDetector *)
+
+- setGlobalMinimumRange
+- setGlobalRepulsionStrength
+- setMinimumRange(minYaw, maxYaw ...)
+- setRepulsionStrength(minYaw, maxYaw, ...)
+
+- setDestinationRadius
+- getDestinationRadius
+
+- update (triggers event path changed / path blocked)
+// currently global
+- setTargetPoint
+- getTargetPoint
+- getDestination
+- getDirection
+- getRepulsion (//for all vector)

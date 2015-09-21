@@ -12,9 +12,11 @@
 #include "interfaces/RosControllerInterface.h"
 #include "sensors/SonarSensor.h"
 #include "modules/NearSpaceDetector.h"
+#include "modules/ActiveSafety.h"
 
 //include the currently used sensor model
 #include "test_model.h"
+#include "potential_functions.h"
 
 #include "log.h"
 #include "geometry.h"
@@ -22,7 +24,8 @@
 std::vector<SonarInterface*> sonar_interfaces;
 ControllerInterface *controller_interface = 0;
 
-NearSpaceDetector near_space_detector(5);
+NearSpaceDetector *near_space_detector;
+ActiveSafety *active_safety;
 
 //init the ROS simulation
 void rosInit(int argc, char **argv){
@@ -30,6 +33,9 @@ void rosInit(int argc, char **argv){
     //init ROS
     ros::init(argc, argv, "active_safety_simulation");
     ros::start();
+    
+    //load the near space near space detector 
+    near_space_detector = new NearSpaceDetector(5);
     
     //load the sensor model
     //TODO: properly read this from model file
@@ -42,17 +48,28 @@ void rosInit(int argc, char **argv){
         
         //creates a sensor and register it
         SonarSensor *sonar_sensor = new SonarSensor(sensors[i].pose, sonar_interface);
-        near_space_detector.registerSensor(sonar_sensor);
+        near_space_detector->registerSensor(sonar_sensor);
     }
     
     //load the controller interface
     controller_interface = new RosControllerInterface("position");
     
     //wait for the controller and sensors interfaces to be available
+    ros::Rate wait_init_rate(100);
     for(size_t i=0; i<sonar_interfaces.size(); ++i){
-        while(!sonar_interfaces[i]->isAvailable()) ros::spinOnce();
+        while(ros::ok() && !sonar_interfaces[i]->isAvailable()) {
+            ros::spinOnce();
+            wait_init_rate.sleep();
+        }
     }
-    while(!controller_interface->isAvailable()) ros::spinOnce();
+    while(ros::ok() && !controller_interface->isAvailable()){
+        ros::spinOnce();
+        wait_init_rate.sleep();
+    }
+    
+    //load the active safety
+    active_safety = new ActiveSafety(near_space_detector);
+    
     Log::info("Finished initialization");
     
 }
@@ -60,10 +77,15 @@ void rosInit(int argc, char **argv){
 //finalize the ROS simulation
 void rosFinalize(){
     Log::info("Finalizing...");
+    //delete interfaces
     for(size_t i=0; i<sonar_interfaces.size(); ++i){
         delete sonar_interfaces[i];
     }
     delete controller_interface;
+    
+    //delete near space and active safety
+    delete near_space_detector;
+    delete active_safety;
     
     ros::shutdown();
     Log::info("Finished finalization");
@@ -77,14 +99,18 @@ void rosRun(){
     //loop until request to die
     ros::Rate rate(10);
     int cnt = 0;
+    
+    active_safety->setTargetPoint(Point(1, 0, 0));
     while(ros::ok()){
         //get distance from sonar and current position from controller
         Log::info("Distance %f", (*sonar_interfaces.begin())->getDistance());
         Point cur = controller_interface->getPosition();
         Log::info("Position %f %f %f", cur.x, cur.y, cur.z);
         
-        //update near space near space
-        near_space_detector.update();
+        //update active safety
+        active_safety->update();
+        Point loc = active_safety->getDestination();
+        Log::info("Destination %f %f %f", loc.x, loc.y, loc.z);
         
         rate.sleep();
         ros::spinOnce();
@@ -93,12 +119,17 @@ void rosRun(){
     }
 }
 
+void test(){
+    
+}
+
 int main(int argc, char **argv){    
 #ifdef ROS_MODE
     rosInit(argc, argv);
     rosRun();
     rosFinalize();
 #else
-    Log::fatal("Only supporting ROS atm..");
+    test();
+    //Log::fatal("Only supporting ROS atm..");
 #endif
 }

@@ -1,5 +1,22 @@
 #include "Potential.h"
 
+Vector Potential::getGradient(Point _point){
+    //get distance between point and potential
+    Vector vector(_point, _pos);
+    
+    //convert distance to potential gradient
+    double potential_gradient = -_potential_function->getGradient(vector.length());
+    
+    //normalize and scale between vector with gradient
+    vector.normalize();
+    vector.scale(potential_gradient);
+    
+    //scale with potential strength
+    vector.scale(_strength);
+    
+    return vector;
+}
+
 void Potential::translate(Vector vec){
     _pos.x += vec.x;
     _pos.y += vec.y;
@@ -15,8 +32,8 @@ void Potential::rotate(RotationMatrix rot){
 }
 
 std::pair<double, double> Potential::getYawPitch(){
-    double pot_pitch = acos(_pos.z/_pos.distance());
-    double pot_yaw = acos(_pos.x/(_pos.distance()*sin(pot_pitch)));
+    double pot_pitch = acos(_pos.z/_pos.distanceOrigin());
+    double pot_yaw = acos(_pos.x/(_pos.distanceOrigin()*sin(pot_pitch)));
     pot_pitch = 0.5*M_PI-pot_pitch;
     return std::make_pair(pot_yaw, pot_pitch);
 }

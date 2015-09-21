@@ -8,9 +8,9 @@
 #include "sensors/DistanceSensor.h"
 
 std::list<DistanceSensor*>::iterator NearSpaceDetector::registerSensor(DistanceSensor *sensor){
-    //set minimum detection range
+    //set maximum range that the sonar should detect
     //WARNING: this is local thus it could be that a unnecessary potential is spawned, this need to be corrected later
-    sensor->setMinimumRange(_global_min_range);
+    sensor->setMaximumRange(_global_min_range);
     
     //add sensor
     _sensors.push_back(sensor);
@@ -29,7 +29,7 @@ double NearSpaceDetector::getDistanceAt(double yaw, double pitch){
     std::list<Potential>::iterator nearest_potential = _potentials.end();
     double best_distance = 2*M_PI;
     for(std::list<Potential>::iterator pot_iter = _potentials.begin(); pot_iter != _potentials.end(); ++pot_iter){
-        //great circle distance
+        //calculate great circle distance and pick nearest
         std::pair<double, double> yaw_pitch = pot_iter->getYawPitch();
         double distance = acos(cos(pitch)*cos(yaw_pitch.second)*cos(yaw-yaw_pitch.first)+sin(pitch)*sin(yaw_pitch.second));
         
@@ -42,7 +42,7 @@ double NearSpaceDetector::getDistanceAt(double yaw, double pitch){
     //TODO: trigger a warning if too far?
     
     if(nearest_potential == _potentials.end()) return _global_min_range;
-    else return nearest_potential->getPosition().distance();
+    else return nearest_potential->getPosition().distanceOrigin();
 }
 
 double NearSpaceDetector::getMinimunDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax){
@@ -50,8 +50,9 @@ double NearSpaceDetector::getMinimunDistanceInRange(double yawMin, double yawMax
     for(std::list<Potential>::iterator pot_iter = _potentials.begin(); pot_iter != _potentials.end(); ++pot_iter){
         std::pair<double, double> yaw_pitch = pot_iter->getYawPitch();
         
+        //check if in range
         if(yawMin < yaw_pitch.first && yaw_pitch.first < yawMax && pitchMin < yaw_pitch.second && yaw_pitch.second < pitchMax){
-            minimum_distance = std::min(minimum_distance, pot_iter->getPosition().distance());
+            minimum_distance = std::min(minimum_distance, pot_iter->getPosition().distanceOrigin());
         }
     }
     return minimum_distance;
@@ -74,7 +75,7 @@ void NearSpaceDetector::update(){
             pot_iter->translate((*sen_iter)->getPose().position);
             
             //check if we keep this potential or that is out of range now
-            if(pot_iter->getPosition().distance() > _global_min_range) pot_iter = sensor_potentials.erase(pot_iter);
+            if(pot_iter->getPosition().distanceOrigin() > _global_min_range) pot_iter = sensor_potentials.erase(pot_iter);
             else ++pot_iter;
         }
         //TODO: trigger a potential event if this sensor did not had a potential before

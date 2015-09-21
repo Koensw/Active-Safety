@@ -2,12 +2,14 @@
 #define _BLUEJAY_GEOMETRY_H_
 
 #include <cmath>
+#include <limits>
 
 /* 
  * Provides geometry interfaces
  */
 
 #define M_PI 3.14159265358979323846
+#define M_EPS 1e-7
 
 /*
  * Point in a frame
@@ -15,12 +17,16 @@
  * y - left/right
  * z - up/down
  */
+class Vector;
+
 class Point{
 public:
     Point(): x(0), y(0), z(0) {}
+    Point(const Vector &p);
     Point(double x_, double y_, double z_): x(x_), y(y_), z(z_) {}
     
-    double distance(){
+    //FIXME: correct name (conflicts a bit with typedef point to vector)
+    double distanceOrigin(){
         return distanceFrom(0, 0, 0);
     }
     double distanceFrom(double x_, double y_, double z_){
@@ -60,7 +66,42 @@ public:
 };
 
 /* Translation vector */
-typedef Point Vector;
+class Vector{
+public:
+    Vector(): x(0), y(0), z(0) {}
+    Vector(const Point &p) {
+        x = p.x; y = p.y; z = p.z;
+    }
+    Vector(const Point &e, const Point &b){
+        x = e.x-b.x; y = e.y-b.y; z = e.z-b.z;
+    }
+    Vector(double x_, double y_, double z_) { 
+        x = x_; y = y_; z = z_; 
+    }    
+    
+    double length(){
+        return sqrt(x*x+y*y+z*z);
+    }
+    void normalize(){
+        double len = length();
+        if(len < M_EPS) return;
+        x /= len;
+        y /= len;
+        z /= len;
+    }
+    void scale(double factor){
+        x *= factor;
+        y *= factor;
+        z *= factor;
+    }
+    
+    double x;
+    double y;
+    double z;
+};
+
+/* Operators for vector */
+Vector operator+(const Vector &v1, const Vector &v2);
 
 /* Rotation matrix */
 class RotationMatrix{
@@ -76,17 +117,7 @@ public:
     
     double elem[3][3];
 private:
-    void init(double y, double p, double r){
-        elem[0][0] = cos(y)*cos(p);
-        elem[0][1] = cos(y)*sin(p)*sin(r)-cos(r)*sin(y);
-        elem[0][2] = sin(y)*sin(r)+cos(y)*cos(r)*sin(p);
-        elem[1][0] = cos(p)*sin(y);
-        elem[1][1] = cos(y)*cos(r)+sin(y)*sin(p)*sin(r);
-        elem[1][2] = cos(r)*sin(y)*sin(p)-cos(y)*sin(r);
-        elem[2][0] = -sin(p);
-        elem[2][1] = cos(p)*sin(r);
-        elem[3][2] = cos(p)*cos(r);
-    }
+    void init(double y, double p, double r);
 };
 
 #endif
