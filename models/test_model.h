@@ -15,13 +15,6 @@ struct SonarInfo{
     std::string topic;
     
     Pose pose;
-    
-    double x;
-    double y;
-    double z;
-    
-    double hRad;
-    double vRad;
 };
 
 //NOTE: imported from iris.xacro in flight_control

@@ -15,6 +15,9 @@ void ActiveSafety::setRepulsionStrengthInRange(double yawMin, double yawMax, dou
 }
 
 void ActiveSafety::update(){
+    //sync the near space minimum distance with the safety interface options
+    _near_space_detector->setGlobalMinimumDistance(_active_safety_interface->getGlobalMinimumDistance());
+    
     //update the near space
     _near_space_detector->update();
     
@@ -27,7 +30,7 @@ void ActiveSafety::update(){
     for(std::list<Potential>::iterator pot_iter = potentials.begin(); pot_iter != potentials.end(); ++pot_iter){
         //TODO: check if in range
         //set repulsion strength (TODO: local strength)
-        pot_iter->setStrength(_global_repulsion_strength);
+        pot_iter->setStrength(getGlobalRepulsionStrength());
         Vector pot_gradient = pot_iter->getGradientOrigin();
         gradient = gradient + pot_gradient;
     }
@@ -48,6 +51,9 @@ void ActiveSafety::update(){
     //Log::info("LENGTH: %f", velocity.length());
     if(velocity.length() > 0.1) velocity.scale(0.1/velocity.length());
     _controller_interface->setVelocity(velocity);
+    
+    //enable the active safety interface which has is now properly started up
+    _active_safety_interface->set_available(true);
 }
 
 /*Point ActiveSafety::getDestination(){    

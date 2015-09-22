@@ -73,6 +73,7 @@ void rosInit(int argc, char **argv){
     
     //load the active safety
     active_safety = new ActiveSafety(near_space_detector, controller_interface, active_safety_interface);
+    active_safety->setGlobalMinimumDistance(3);
     
     Log::info("Finished initialization");
     
@@ -109,8 +110,8 @@ void rosRun(){
     active_safety->setTargetPoint(Point(8, 0, 3));
     
     //->setGlobalRepulsionStrength(5);
-    active_safety->setGlobalRepulsionStrength(0.2);
-    active_safety->setTargetAttractionStrength(1);
+    active_safety->setGlobalRepulsionStrength(0.3);
+    active_safety->setTargetAttractionStrength(0.8);
     while(ros::ok()){
         //get current position from controller
         Point cur = controller_interface->getPosition();

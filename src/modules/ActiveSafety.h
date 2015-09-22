@@ -13,21 +13,21 @@
 class ActiveSafety{
 public:
     ActiveSafety(NearSpaceDetector *near_space_detector, ControllerInterface *controller_interface, ActiveSafetyInterface *active_safety_interface): 
-    _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), _global_repulsion_strength(1), _target_attraction_strength(1) {};
+    _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), _target_attraction_strength(1) {};
     
     /* Set global range */
     void setGlobalMinimumDistance(double distance){
-        _near_space_detector->setGlobalMinimumDistance(distance);
+        _active_safety_interface->setGlobalMinimumDistance(distance);
     }
     double getGlobalMinimumDistance(){
         return _near_space_detector->getGlobalMinimumDistance();
     }
     /* Set repulsion and target attraction */
     void setGlobalRepulsionStrength(double repulsion_strength){
-        _global_repulsion_strength = repulsion_strength;
+        _active_safety_interface->setGlobalRepulsionStrength(repulsion_strength);
     }
     double getGlobalRepulsionStrength(){
-        return _global_repulsion_strength;
+        return _active_safety_interface->getGlobalRepulsionStrength();
     }
     void setTargetAttractionStrength(double attraction_strength){
         _target_attraction_strength = attraction_strength;
@@ -41,14 +41,6 @@ public:
      */
     void setMinimumDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax);
     void setRepulsionStrengthInRange(double yawMin, double yawMax, double pitchMin, double pitchMax);
-    
-    /* Set radius for integrating the direction */
-    /*void setDestinationRadius(double radius){
-        _integration_length = radius;
-    }
-    double getDestinationRadius(){
-        return _integration_length;
-    }*/
     
     /* Get/sets target point
      WARNING: expects this in global frame
@@ -75,6 +67,14 @@ public:
      */
     //Vector getAggressiveness();
     
+    /* Set radius for integrating the direction */
+    /*void setDestinationRadius(double radius){
+        _integration_length = radius;
+    }
+    double getDestinationRadius(){
+        return _integration_length;
+    }*/
+    
 private:
     //WARNING: disallow copy
     ActiveSafety(const ActiveSafety&);
@@ -84,11 +84,9 @@ private:
     ControllerInterface *_controller_interface;
     ActiveSafetyInterface *_active_safety_interface;
     
-    double _global_repulsion_strength;
     double _target_attraction_strength;
     
     Vector _direction_gradient;
-    //double _integration_length;
 };
 
 #endif
