@@ -9,10 +9,14 @@
 
 class ControllerInterface: public SystemInterface{
 public:
-    /* Sets the target position for the controller */
-    //FIXME: should be in local frame?
-    //FIXME: cannot set yaw
+    /* Sets the current updated position of the controller */
+    //FIXME: cannot set yaw?
     virtual void setPosition(Point) = 0;
+    
+    /* Sets the target velocity to the controller */
+    //FIXME: should do this in local frame ?
+    //FIXME: we should set the velocities instead
+    virtual void setVelocity(Vector) = 0;
     
     /* Gets the current position from the controller */
     virtual Point getPosition() = 0;

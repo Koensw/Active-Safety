@@ -23,6 +23,7 @@
 
 std::vector<SonarInterface*> sonar_interfaces;
 ControllerInterface *controller_interface = 0;
+ActiveSafetyInterface *active_safety_interface = 0;
 
 NearSpaceDetector *near_space_detector;
 ActiveSafety *active_safety;
@@ -35,15 +36,15 @@ void rosInit(int argc, char **argv){
     ros::start();
     
     //load the near space near space detector 
-    near_space_detector = new NearSpaceDetector(5);
+    near_space_detector = new NearSpaceDetector(2);
     
     //load the sensor model
     //TODO: properly read this from model file
     std::vector<SonarInfo> sensors = getSonarModel();
     for(size_t i=0; i<sensors.size(); ++i){
-        //SonarInterface *sonar_interface = new RosSonarInterface(sensors[i].topic);
-        TestSonarInterface *sonar_interface = new TestSonarInterface();
-        sonar_interface->setDistance(0.4);
+        SonarInterface *sonar_interface = new RosSonarInterface(sensors[i].topic);
+        //TestSonarInterface *sonar_interface = new TestSonarInterface();
+        //sonar_interface->setDistance(0.4);
         sonar_interfaces.push_back(sonar_interface);
         
         //creates a sensor and register it
@@ -52,7 +53,7 @@ void rosInit(int argc, char **argv){
     }
     
     //load the controller interface
-    controller_interface = new RosControllerInterface("position");
+    controller_interface = new RosControllerInterface("velocity", "iris/vehicle_local_position");
     
     //wait for the controller and sensors interfaces to be available
     ros::Rate wait_init_rate(100);
@@ -67,8 +68,11 @@ void rosInit(int argc, char **argv){
         wait_init_rate.sleep();
     }
     
+    //load the active safety interface
+    active_safety_interface = new ActiveSafetyInterface();
+    
     //load the active safety
-    active_safety = new ActiveSafety(near_space_detector);
+    active_safety = new ActiveSafety(near_space_detector, controller_interface, active_safety_interface);
     
     Log::info("Finished initialization");
     
@@ -82,6 +86,7 @@ void rosFinalize(){
         delete sonar_interfaces[i];
     }
     delete controller_interface;
+    delete active_safety_interface;
     
     //delete near space and active safety
     delete near_space_detector;
@@ -94,23 +99,29 @@ void rosFinalize(){
 //run the simulation
 void rosRun(){
     //set a position for the controller to goto
-    controller_interface->setPosition(Point(-4, -4, 4));
+    //controller_interface->setTargetPosition(Point(0, 0, 4));
     
     //loop until request to die
-    ros::Rate rate(10);
+    ros::Rate rate(50);
     int cnt = 0;
     
-    active_safety->setTargetPoint(Point(1, 0, 0));
+    //active_safety_interface->setTargetPosition(Point(8, 0, 3));
+    active_safety->setTargetPoint(Point(8, 0, 3));
+    
+    //->setGlobalRepulsionStrength(5);
+    active_safety->setGlobalRepulsionStrength(0.2);
+    active_safety->setTargetAttractionStrength(1);
     while(ros::ok()){
-        //get distance from sonar and current position from controller
-        Log::info("Distance %f", (*sonar_interfaces.begin())->getDistance());
+        //get current position from controller
         Point cur = controller_interface->getPosition();
         Log::info("Position %f %f %f", cur.x, cur.y, cur.z);
         
         //update active safety
         active_safety->update();
-        Point loc = active_safety->getDestination();
-        Log::info("Destination %f %f %f", loc.x, loc.y, loc.z);
+        
+        //get direction where flying to
+        Vector direction = active_safety->getDirection();
+        Log::info("Direction %f %f %f", direction.x, direction.y, direction.z);
         
         rate.sleep();
         ros::spinOnce();

@@ -4,15 +4,16 @@
 #include "geometry.h"
 
 #include "modules/NearSpaceDetector.h"
+#include "interfaces/ControllerInterface.h"
+#include "interfaces/ActiveSafetyInterface.h"
 
 /*
  * Active safety controller that builds a safe flight path for the controller without bumping into objects
  */
 class ActiveSafety{
 public:
-    ActiveSafety(NearSpaceDetector *near_space_detector): 
-    _near_space_detector(near_space_detector), _global_repulsion_strength(1), _target_attraction_strength(1),
-    _integration_length(1) {};
+    ActiveSafety(NearSpaceDetector *near_space_detector, ControllerInterface *controller_interface, ActiveSafetyInterface *active_safety_interface): 
+    _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), _global_repulsion_strength(1), _target_attraction_strength(1) {};
     
     /* Set global range */
     void setGlobalMinimumDistance(double distance){
@@ -42,31 +43,35 @@ public:
     void setRepulsionStrengthInRange(double yawMin, double yawMax, double pitchMin, double pitchMax);
     
     /* Set radius for integrating the direction */
-    void setDestinationRadius(double radius){
+    /*void setDestinationRadius(double radius){
         _integration_length = radius;
     }
     double getDestinationRadius(){
         return _integration_length;
-    }
+    }*/
     
-    /* Get/sets target point */
+    /* Get/sets target point
+     WARNING: expects this in global frame
+     */
     void setTargetPoint(Point point){
-        _target_point = point;
+        _active_safety_interface->setTargetPosition(point);
     }
     Point getTargetPoint(){
-        return _target_point;
+        return _active_safety_interface->getTargetPosition();
     }
     
     /* Update active safety layer */
     void update();
     
     /* Get direction and destination */
-    Point getDestination();
-    Vector getDirection(); //WARNING: same function ?? (depends on coordinate frame)
+    //Point getDestination();
+    Vector getDirection();
+    
+    /* Set position */
+    void setPose();
     
     /* Get repulsion strength 
-     ALERT: not yet known how to use this
-     WARNING: better name ?
+     ALERT: not yet known how to use this, possibly not needed at all
      */
     //Vector getAggressiveness();
     
@@ -76,13 +81,14 @@ private:
     ActiveSafety& operator=(const ActiveSafety&);
     
     NearSpaceDetector *_near_space_detector;
+    ControllerInterface *_controller_interface;
+    ActiveSafetyInterface *_active_safety_interface;
     
     double _global_repulsion_strength;
     double _target_attraction_strength;
     
-    Point _target_point;
     Vector _direction_gradient;
-    double _integration_length;
+    //double _integration_length;
 };
 
 #endif

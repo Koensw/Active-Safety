@@ -18,6 +18,9 @@ void ActiveSafety::update(){
     //update the near space
     _near_space_detector->update();
     
+    //get the last position of the controller
+    Point current_position = _controller_interface->getPosition();
+    
     //get all potentials
     Vector gradient;
     std::list<Potential> potentials = _near_space_detector->getPotentials();
@@ -25,24 +28,36 @@ void ActiveSafety::update(){
         //TODO: check if in range
         //set repulsion strength (TODO: local strength)
         pot_iter->setStrength(_global_repulsion_strength);
-        gradient = gradient + pot_iter->getGradientOrigin();
+        Vector pot_gradient = pot_iter->getGradientOrigin();
+        gradient = gradient + pot_gradient;
     }
     
+    //convert the target to local frame
+    Point relative_target = getTargetPoint() - current_position;
+    
     //make the attractive potential
-    Potential target_pot(_target_point, new LinearPotentialFunction(), _target_attraction_strength);
+    //FIXME: configure near space behaviour
+    Potential target_pot(relative_target, new QuadraticLinearPotentialFunction(1), _target_attraction_strength);
     gradient = gradient + target_pot.getGradientOrigin();
     
     //TODO: trigger the necessary events
     _direction_gradient = gradient;
+    
+    //push to the controller
+    Vector velocity = _direction_gradient;
+    //Log::info("LENGTH: %f", velocity.length());
+    if(velocity.length() > 0.1) velocity.scale(0.1/velocity.length());
+    _controller_interface->setVelocity(velocity);
 }
 
-Point ActiveSafety::getDestination(){
+/*Point ActiveSafety::getDestination(){    
     Vector direction = _direction_gradient;
-    direction.normalize();
+    
+    //direction.normalize();
     
     direction.scale(_integration_length);
     return direction;
-}
+}*/
 
 Vector ActiveSafety::getDirection(){
     return _direction_gradient;

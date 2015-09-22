@@ -12,6 +12,20 @@ Vector operator+(const Vector &v1, const Vector &v2){
     return vec;
 }
 
+Vector operator-(const Vector &v1, const Vector &v2){
+    Vector temp_vec = v2;
+    temp_vec.scale(-1);
+    return v1+temp_vec;
+}
+
+Orientation operator-(const Orientation &o){
+    Orientation n;
+    n.r = -o.r;
+    n.p = -o.p;
+    n.y = -o.y;
+    return n;
+}
+
 void RotationMatrix::init(double y, double p, double r){
     elem[0][0] = cos(y)*cos(p);
     elem[0][1] = cos(y)*sin(p)*sin(r)-cos(r)*sin(y);

@@ -77,7 +77,7 @@ public:
     }
     Vector(double x_, double y_, double z_) { 
         x = x_; y = y_; z = z_; 
-    }    
+    }   
     
     double length(){
         return sqrt(x*x+y*y+z*z);
@@ -100,8 +100,11 @@ public:
     double z;
 };
 
-/* Operators for vector */
+/* Operators */
 Vector operator+(const Vector &v1, const Vector &v2);
+Vector operator-(const Vector &v1, const Vector &v2);
+
+Orientation operator-(const Orientation &o);
 
 /* Rotation matrix */
 class RotationMatrix{

@@ -69,7 +69,7 @@ void NearSpaceDetector::update(){
         for(std::list<Potential>::iterator pot_iter = sensor_potentials.begin(); pot_iter != sensor_potentials.end();){
             //rotate the potential to align the sensor and the body frame
             //DEBUG: std::cout << pot_iter->getPosition().x << " " << pot_iter->getPosition().y << " " << pot_iter->getPosition().z << std::endl;
-            pot_iter->rotate(RotationMatrix((*sen_iter)->getPose().orientation));
+            pot_iter->rotate(RotationMatrix(-(*sen_iter)->getPose().orientation));
             
             //translate the potential frame to the body frame
             pot_iter->translate((*sen_iter)->getPose().position);

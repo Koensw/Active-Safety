@@ -57,4 +57,24 @@ public:
     }
 };
 
+class QuadraticLinearPotentialFunction : public PotentialFunction{
+public:    
+    QuadraticLinearPotentialFunction(double transition_range): _transition_range(transition_range) {}
+    PotentialFunction* clone(){
+        return new QuadraticLinearPotentialFunction(_transition_range);
+    }
+    
+    //TODO: implement transition range to quadratic
+    double getValue(double r){
+        if(r < _transition_range) return 1/(2*_transition_range)*r*r;
+        else return r-1/(2*_transition_range);
+    }
+    double getGradient(double r){
+        if(r < _transition_range) return 1/(_transition_range)*r;
+        else return 1;
+    }
+private:
+    double _transition_range;
+};
+
 #endif 
