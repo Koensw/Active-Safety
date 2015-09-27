@@ -3,6 +3,8 @@
 #include "helpers/Potential.h"
 #include "potential_functions.h"
 
+#include "log.h"
+
 std::list<Potential> SonarSensor::getPotentials(){
     //check if object in range
     if(getDistance() > _max_range) return std::list<Potential>();

@@ -23,7 +23,7 @@ void ActiveSafety::update(){
     
     //get the last position of the controller
     Point current_position = _controller_interface->getPosition();
-    
+
     //get all potentials
     Vector gradient;
     std::list<Potential> potentials = _near_space_detector->getPotentials();
@@ -33,6 +33,7 @@ void ActiveSafety::update(){
         pot_iter->setStrength(getGlobalRepulsionStrength());
         Vector pot_gradient = pot_iter->getGradientOrigin();
         gradient = gradient + pot_gradient;
+	Log::info("POTENTIAL");
     }
     
     //convert the target to local frame
@@ -41,7 +42,7 @@ void ActiveSafety::update(){
     //make the attractive potential
     //FIXME: configure near space behaviour
     Potential target_pot(relative_target, new QuadraticLinearPotentialFunction(1), _target_attraction_strength);
-    gradient = gradient + target_pot.getGradientOrigin();
+    //gradient = gradient + target_pot.getGradientOrigin();
     
     //TODO: trigger the necessary events
     _direction_gradient = gradient;

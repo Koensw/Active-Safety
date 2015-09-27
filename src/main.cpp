@@ -74,6 +74,7 @@ void rosInit(int argc, char **argv){
     for(size_t i=0; i<sonar_interfaces.size(); ++i){
         while(ros::ok() && !sonar_interfaces[i]->isAvailable()) {
             ros::spinOnce();
+	    sonar_reader.update();
             wait_init_rate.sleep();
         }
     }
@@ -87,7 +88,7 @@ void rosInit(int argc, char **argv){
     
     //load the active safety
     active_safety = new ActiveSafety(near_space_detector, controller_interface, active_safety_interface);
-    active_safety->setGlobalMinimumDistance(1);
+    active_safety->setGlobalMinimumDistance(0.5);
     
     Log::info("Finished initialization");
     
@@ -121,7 +122,7 @@ void rosRun(){
     int cnt = 0;
     
     //active_safety_interface->setTargetPosition(Point(8, 0, 3));
-    active_safety->setTargetPoint(Point(8, 0, 3));
+    active_safety->setTargetPoint(Point(0, 0, 3));
     
     //->setGlobalRepulsionStrength(5);
     active_safety->setGlobalRepulsionStrength(0.3);
