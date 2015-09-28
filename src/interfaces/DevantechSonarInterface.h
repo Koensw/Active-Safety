@@ -9,10 +9,10 @@
 
 /* special devantech range values */
 const int DEVANTECH_FOV = 1.04719755;
-const int DEVANTECH_MIN_RANGE = 3;
-const int DEVANTECH_MAX_RANGE = 500;
+const int DEVANTECH_MIN_RANGE = 0.03;
+const int DEVANTECH_MAX_RANGE = 5;
 
-const int DEVANTECH_ERROR_RANGE = 1000;
+const int DEVANTECH_ERROR_RANGE = 10;
 
 //TODO: not threadsafe currently
 class DevantechSonarInterface : public PhysicalSonarInterface{

@@ -17,13 +17,14 @@
 #include "modules/NearSpaceDetector.h"
 #include "modules/ActiveSafety.h"
 
-//include the currently used sensor model
-#include "test_model.h"
 #include "potential_functions.h"
 
 #include "i2c.h"
 #include "log.h"
 #include "geometry.h"
+
+//include the currently used sensor model
+#include "real_model.h"
 
 std::vector<SonarInterface*> sonar_interfaces;
 ControllerInterface *controller_interface = 0;
@@ -46,24 +47,24 @@ void rosInit(int argc, char **argv){
     ros::start();
     
     //load the near space near space detector 
-    near_space_detector = new NearSpaceDetector(2);
+    near_space_detector = new NearSpaceDetector();
+    
+    //set the sonar reader helper
+    sonar_reader.setSecondsBetween(0.2);
     
     //load the sensor model
     //TODO: properly read this from model file
     std::vector<SonarInfo> sensors = getSonarModel();
     for(size_t i=0; i<sensors.size(); ++i){
-        SonarInterface *sonar_interface = new RosSonarInterface(sensors[i].topic);
+        //SonarInterface *sonar_interface = new RosSonarInterface(sensors[i].topic);
+        PhysicalSonarInterface *sonar_interface = new DevantechSonarInterface(sensors[i].address);
         sonar_interfaces.push_back(sonar_interface);
+        sonar_reader.registerSonar(sonar_interface);
         
         //creates a sensor and register it
         SonarSensor *sonar_sensor = new SonarSensor(sensors[i].pose, sonar_interface);
         near_space_detector->registerSensor(sonar_sensor);
     }
-    
-    //physical sonar
-    sonar_reader.setSecondsBetween(0.7);
-    phys_sonar = new DevantechSonarInterface(0x70);
-    sonar_reader.registerSonar(phys_sonar);
     
     //load the controller interface
     controller_interface = new RosControllerInterface("velocity", "iris/vehicle_local_position");
@@ -86,7 +87,7 @@ void rosInit(int argc, char **argv){
     
     //load the active safety
     active_safety = new ActiveSafety(near_space_detector, controller_interface, active_safety_interface);
-    active_safety->setGlobalMinimumDistance(3);
+    active_safety->setGlobalMinimumDistance(1);
     
     Log::info("Finished initialization");
     
@@ -126,7 +127,9 @@ void rosRun(){
     active_safety->setGlobalRepulsionStrength(0.3);
     active_safety->setTargetAttractionStrength(0.8);
     while(ros::ok()){
-        Log::info("Distance %f", phys_sonar->getDistance());
+        for(size_t i=0; i<sonar_interfaces.size(); ++i){
+            Log::info("Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
+        }
         
         //get current position from controller
         Point cur = controller_interface->getPosition();

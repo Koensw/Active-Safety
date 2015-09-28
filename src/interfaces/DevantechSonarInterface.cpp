@@ -28,7 +28,7 @@ void DevantechSonarInterface::updateDistance(){
     total <<= 8;
     total |= data;
     if(total == 0) _range = DEVANTECH_MAX_RANGE;
-    else _range = total;
+    else _range = total/100.0;
     
     //the sonar is is avaible now we have our first range
     if(!isAvailable()) set_available(true);    
