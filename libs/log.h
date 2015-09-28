@@ -2,6 +2,7 @@
 #define _BLUEJAY_LOG_H_
 
 #include <iostream>
+#include <cstdlib>
 #include <cstdio>
 #include <cstdarg>
 
@@ -13,11 +14,23 @@ class Log{
 public:
     static void fatal( const char* format, ... ) {
         va_list args;
+        fprintf( stderr, "[FATAL] " );
+        va_start( args, format );
+        vfprintf( stderr, format, args );
+        va_end( args );
+        fprintf( stderr, "\n" ); 
+        
+        //FIXME: we should never want to randomly stop processes in a logger...
+        std::exit(0);
+    }
+    
+    static void error( const char* format, ... ) {
+        va_list args;
         fprintf( stderr, "[ERROR] " );
         va_start( args, format );
         vfprintf( stderr, format, args );
         va_end( args );
-        fprintf( stderr, "\n" );
+        fprintf( stderr, "\n" ); 
     }
     
     static void info( const char* format, ... ) {

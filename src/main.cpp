@@ -2,6 +2,7 @@
  * Startup code for the project, decides which mode to run 
  */
 #define ROS_MODE
+#define RPI_MODE
 
 #ifdef ROS_MODE
 #include "ros/ros.h"
@@ -10,6 +11,8 @@
 #include "interfaces/RosSonarInterface.h"
 #include "interfaces/TestSonarInterface.h"
 #include "interfaces/RosControllerInterface.h"
+#include "interfaces/DevantechSonarInterface.h"
+#include "helpers/SonarReader.h"
 #include "sensors/SonarSensor.h"
 #include "modules/NearSpaceDetector.h"
 #include "modules/ActiveSafety.h"
@@ -18,6 +21,7 @@
 #include "test_model.h"
 #include "potential_functions.h"
 
+#include "i2c.h"
 #include "log.h"
 #include "geometry.h"
 
@@ -27,6 +31,12 @@ ActiveSafetyInterface *active_safety_interface = 0;
 
 NearSpaceDetector *near_space_detector;
 ActiveSafety *active_safety;
+
+//start a sonar reader
+SonarReader sonar_reader;
+
+//FIXME: TEMPORARY
+PhysicalSonarInterface *phys_sonar;
 
 //init the ROS simulation
 void rosInit(int argc, char **argv){
@@ -43,14 +53,17 @@ void rosInit(int argc, char **argv){
     std::vector<SonarInfo> sensors = getSonarModel();
     for(size_t i=0; i<sensors.size(); ++i){
         SonarInterface *sonar_interface = new RosSonarInterface(sensors[i].topic);
-        //TestSonarInterface *sonar_interface = new TestSonarInterface();
-        //sonar_interface->setDistance(0.4);
         sonar_interfaces.push_back(sonar_interface);
         
         //creates a sensor and register it
         SonarSensor *sonar_sensor = new SonarSensor(sensors[i].pose, sonar_interface);
         near_space_detector->registerSensor(sonar_sensor);
     }
+    
+    //physical sonar
+    sonar_reader.setSecondsBetween(0.7);
+    phys_sonar = new DevantechSonarInterface(0x70);
+    sonar_reader.registerSonar(phys_sonar);
     
     //load the controller interface
     controller_interface = new RosControllerInterface("velocity", "iris/vehicle_local_position");
@@ -113,9 +126,14 @@ void rosRun(){
     active_safety->setGlobalRepulsionStrength(0.3);
     active_safety->setTargetAttractionStrength(0.8);
     while(ros::ok()){
+        Log::info("Distance %f", phys_sonar->getDistance());
+        
         //get current position from controller
         Point cur = controller_interface->getPosition();
         Log::info("Position %f %f %f", cur.x, cur.y, cur.z);
+        
+        //update sensors
+        sonar_reader.update();
         
         //update active safety
         active_safety->update();
@@ -135,7 +153,11 @@ void test(){
     
 }
 
-int main(int argc, char **argv){    
+int main(int argc, char **argv){  
+#ifdef RPI_MODE
+    I2C::start("/dev/i2c-1");
+#endif
+    
 #ifdef ROS_MODE
     rosInit(argc, argv);
     rosRun();
@@ -143,5 +165,9 @@ int main(int argc, char **argv){
 #else
     test();
     //Log::fatal("Only supporting ROS atm..");
+#endif
+    
+#ifdef RPI_MODE
+    I2C::stop();
 #endif
 }

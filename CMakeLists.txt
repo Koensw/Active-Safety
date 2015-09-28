@@ -92,17 +92,22 @@ include_directories(models/)
 add_library(geometry
     libs/geometry.cpp
 )
+add_library(i2c
+    libs/i2c.cpp
+)
 add_executable(active_safety
     src/main.cpp
     src/interfaces/TestSonarInterface.cpp
     src/interfaces/RosSonarInterface.cpp
     src/interfaces/RosControllerInterface.cpp
+    src/interfaces/DevantechSonarInterface.cpp
     src/helpers/Potential.cpp
+    src/helpers/SonarReader.cpp
     src/sensors/SonarSensor.cpp
     src/modules/NearSpaceDetector.cpp
     src/modules/ActiveSafety.cpp
 )
-target_link_libraries(active_safety geometry ${catkin_LIBRARIES})
+target_link_libraries(active_safety i2c geometry ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

@@ -4,6 +4,8 @@
 #include <cmath>
 #include <limits>
 
+//TODO: better use a tested geometry library (Eigen?)
+
 /* 
  * Provides geometry interfaces
  */

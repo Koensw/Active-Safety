@@ -49,7 +49,7 @@ void ActiveSafety::update(){
     //push to the controller
     Vector velocity = _direction_gradient;
     //Log::info("LENGTH: %f", velocity.length());
-    if(velocity.length() > 0.1) velocity.scale(0.1/velocity.length());
+    if(velocity.length() > 0.8) velocity.scale(0.8/velocity.length());
     _controller_interface->setVelocity(velocity);
     
     //enable the active safety interface which has is now properly started up

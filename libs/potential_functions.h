@@ -48,7 +48,6 @@ public:
         return new LinearPotentialFunction();
     }
     
-    //TODO: implement transition range to quadratic
     double getValue(double r){
         return r;
     }
@@ -64,7 +63,6 @@ public:
         return new QuadraticLinearPotentialFunction(_transition_range);
     }
     
-    //TODO: implement transition range to quadratic
     double getValue(double r){
         if(r < _transition_range) return 1/(2*_transition_range)*r*r;
         else return r-1/(2*_transition_range);
