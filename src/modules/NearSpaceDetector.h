@@ -38,14 +38,7 @@ public:
     double getMinimunDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax);
     
     /* Set the global minimum distance to act on */
-    void setGlobalMinimumDistance(double global_min_range){
-        _global_min_range = global_min_range;
-	//FIXME: local file
-	//update sensors
-	for(std::list<DistanceSensor*>::iterator iter = _sensors.begin(); iter != _sensors.end(); ++iter){
-	    (*iter)->setMaximumRange(_global_min_range);
-	}
-    }
+    void setGlobalMinimumDistance(double global_min_range);
     double getGlobalMinimumDistance(){
         return _global_min_range;
     }

@@ -21,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 # set compiler and flags
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Wno-unused-parameter ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
 
 # set catkin settings
 catkin_package(
@@ -52,4 +52,4 @@ add_executable(active_safety
     src/modules/NearSpaceDetector.cpp
     src/modules/ActiveSafety.cpp
 )
-target_link_libraries(active_safety i2c geometry ${catkin_LIBRARIES} rt)
+target_link_libraries(active_safety bjos i2c geometry ${catkin_LIBRARIES} rt)

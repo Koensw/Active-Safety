@@ -5,7 +5,7 @@
  * Devantech Sonar interface that works with the real sonars
  */
 
-#include "interfaces/PhysicalSonarInterface.h"
+#include "PhysicalSonarInterface.h"
 
 /* special devantech range values */
 const int DEVANTECH_FOV = 1.04719755;

@@ -16,8 +16,6 @@ public:
     virtual double getFieldOfView() = 0;
     virtual double getMinRange() = 0;
     virtual double getMaxRange() = 0;
-    
-    virtual ~SonarInterface() {}
 };
 
 #endif

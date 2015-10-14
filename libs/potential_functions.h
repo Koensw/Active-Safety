@@ -51,7 +51,7 @@ public:
     double getValue(double r){
         return r;
     }
-    double getGradient(double r){
+    double getGradient(double){
         return 1;
     }
 };

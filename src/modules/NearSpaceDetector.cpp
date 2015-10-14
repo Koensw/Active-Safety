@@ -23,6 +23,15 @@ void NearSpaceDetector::unregisterSensor(std::list<DistanceSensor*>::iterator it
     _sensors.erase(iter);
 }
 
+void NearSpaceDetector::setGlobalMinimumDistance(double global_min_range){
+    _global_min_range = global_min_range;
+    
+    //update sensors
+    for(std::list<DistanceSensor*>::iterator iter = _sensors.begin(); iter != _sensors.end(); ++iter){
+        (*iter)->setMaximumRange(_global_min_range);
+    }
+}
+
 //TODO: make this more clever to merge values from other potentials ??
 double NearSpaceDetector::getDistanceAt(double yaw, double pitch){
     //find nearest potential and return distance

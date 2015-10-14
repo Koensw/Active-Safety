@@ -1,7 +1,7 @@
 #ifndef _BLUEJAY_PHYSICAL_SONAR_INTERFACE_H_
 #define _BLUEJAY_PHYSICAL_SONAR_INTERFACE_H_
 
-#include "interfaces/SonarInterface.h"
+#include "SonarInterface.h"
 
 /* 
  * Base class for sonar interfaces that use real physical sonars

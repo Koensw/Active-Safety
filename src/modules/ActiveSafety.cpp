@@ -6,11 +6,11 @@
 #include "modules/NearSpaceDetector.h"
 #include "helpers/Potential.h"
 
-void ActiveSafety::setMinimumDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax){
+void ActiveSafety::setMinimumDistanceInRange(double, double, double, double){
     Log::fatal("ActiveSafety::setMinimumDistanceInRange not implemented yet!");
 }
 
-void ActiveSafety::setRepulsionStrengthInRange(double yawMin, double yawMax, double pitchMin, double pitchMax){
+void ActiveSafety::setRepulsionStrengthInRange(double, double, double, double){
     Log::fatal("ActiveSafety::setRepulsionStrengthInRange not implemented yet!");
 }
 

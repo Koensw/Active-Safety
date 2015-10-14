@@ -1,0 +1,46 @@
+*** HIGH LEVEL ***
+AI <-> flight mission
+> [x y z] of [id] van target locatie (push)
+< array([x y z y]) flight path  (get)
+
+flight mission <-> visual abstractor
+(> [[pixel array]] of space with camera
+
+flight mission <-> active safety
+> [x y z y] set point           (push)
+< [x y z y] target position     (?)
+
+recognition module
+> [[pixel array]] of space with camera (daan)
+
+ai <-> gripper abstractor
+> [on] gripper                (push)
+< [length] how far the gripper had to push before it gripped something (push/get)
+
+
+* alle set dingen kunnen gepusht worden (dat is ook logisch)
+* feedback kan ook via push (maar get is handiger)
+* alle abstractor in c++ communiceren met de realtime low-level interface
+
+# ASYNCHROON PUSH/SUBSCRIBE CHANNEL (met in ieder geval nooit meer dan een echte subscriber / debug subscriber is wel handig)
+# SYNCHROON GET FEEDBACK CHANNEL (kan ook door constant feedback te pushen naar meerdere subscribers)
+
+-> message name and a default set of params on one line (normally only numbers)!
+
+BROKER
++ actual location of layer is not important
++ (lifetimes do not have to overlap)
+- extra layer / not portable if we want to send special messages
+- broker can be bottleneck 
+
+# BROKERLESS IS BETTER
+
+* thread has a connection to the subscriber channel (and the synchronous channel) and waits for input and processes it (and returns in case of the synchronous channel)
+* thread sends it output in a default interval
+* WORK OUT AN EXAMPLE...
+
+*** LOW LEVEL ***
+
+active safety <-> flight controller
+> [vx vy vz vy] controller velocity body frame of [x y z y] in body/local frame (push)
+> [x y z y r p] current controller position (push)

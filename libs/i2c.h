@@ -26,9 +26,9 @@ public:
         return _descriptor != 0;
     }
     /* Write to an I2C register */
-    static int write(unsigned char address, unsigned char reg_address, unsigned char data);
+    static int write(unsigned char address, unsigned char reg_address, unsigned char data, bool log = true);
     /* Read from an I2C register */
-    static int read(unsigned char address, unsigned char reg_address, unsigned char &data);
+    static int read(unsigned char address, unsigned char reg_address, unsigned char &data, bool log = true);
 private:
     I2C() {}
     

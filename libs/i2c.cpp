@@ -30,10 +30,10 @@ int I2C::stop(){
     return ret_val;
 }
 
-int I2C::read(unsigned char address, unsigned char reg_addr, unsigned char &data){
+int I2C::read(unsigned char address, unsigned char reg_addr, unsigned char &data, bool log){
     data = 0;
     if(!isStarted()) {
-        Log::error("Trying to read data while I2C is not started yet");
+        if(log) Log::error("Trying to read data while I2C is not started yet");
         return -1;
     }
     
@@ -57,16 +57,16 @@ int I2C::read(unsigned char address, unsigned char reg_addr, unsigned char &data
     packets.nmsgs = 2;
     
     int ret_val = ioctl(_descriptor, I2C_RDWR, &packets);
-    if(ret_val < 0){
+    if(log && ret_val < 0){
         Log::error("Cannot read register address %#1x from device %#1x", reg_addr, address);
     }
     
     return ret_val;
 }
 
-int I2C::write(unsigned char address, unsigned char reg_addr, unsigned char data){
+int I2C::write(unsigned char address, unsigned char reg_addr, unsigned char data, bool log){
     if(!isStarted()) {
-        Log::error("Trying to write data while I2C is not started yet");
+        if(log) Log::error("Trying to write data while I2C is not started yet");
         return -1;
     }
     
@@ -86,7 +86,7 @@ int I2C::write(unsigned char address, unsigned char reg_addr, unsigned char data
     packets.nmsgs = 1;
     
     int ret_val = ioctl(_descriptor, I2C_RDWR, &packets);
-    if(ret_val < 0){
+    if(log && ret_val < 0){
         Log::error("Cannot write data to device %#1x at register address %#1x", address, reg_addr);
     }
     

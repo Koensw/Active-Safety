@@ -15,7 +15,7 @@ RosControllerInterface::RosControllerInterface(std::string pub_topic, std::strin
     _sub_pos = _node.subscribe(rec_topic, 10, &RosControllerInterface::update_position, this);
 }
 
-void RosControllerInterface::setPosition(Point loc){
+void RosControllerInterface::setPosition(Point){
     //ALERT: NOT IMPLEMENTED (IN ROS WE HAVE GROUND TRUTH)
 }
 
