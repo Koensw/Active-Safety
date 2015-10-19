@@ -8,11 +8,11 @@ RosControllerInterface::RosControllerInterface(std::string pub_topic, std::strin
     _topic = pub_topic;
     
     //publish to position topic
-    _pub_pos = _node.advertise<geometry_msgs::Point>(_topic, 10);
+    _pub_pos = _node.advertise<geometry_msgs::Point>(_topic, 10000);
     
     //subscribe to px4 location topic
     //FIXME: only for debugging...
-    _sub_pos = _node.subscribe(rec_topic, 10, &RosControllerInterface::update_position, this);
+    _sub_pos = _node.subscribe(rec_topic, 10000, &RosControllerInterface::update_position, this);
 }
 
 void RosControllerInterface::setPosition(Point){

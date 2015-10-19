@@ -85,13 +85,13 @@ bool rosInit(int argc, char **argv){
     
     //wait for the controller and sensors interfaces to be available
     ros::Rate wait_init_rate(100);
-    for(size_t i=0; i<sonar_interfaces.size(); ++i){
-        while(ros::ok() && !sonar_interfaces[i]->isAvailable()) {
+    /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
+        while(Process::isActive() && !sonar_interfaces[i]->isAvailable()) {
             ros::spinOnce();
             wait_init_rate.sleep();
         }
-    }
-    while(ros::ok() && !controller_interface->isAvailable()){
+    }*/
+    while(Process::isActive() && !controller_interface->isAvailable()){
         ros::spinOnce();
         wait_init_rate.sleep();
     }
@@ -142,7 +142,7 @@ void rosRun(){
     
     //->setGlobalRepulsionStrength(5);
     active_safety->setGlobalRepulsionStrength(0.3);
-    active_safety->setTargetAttractionStrength(0.8);
+    active_safety->setTargetAttractionStrength(0.2);
     while(Process::isActive()){
         for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
