@@ -2,6 +2,10 @@
 #define _BLUEJAY_ACTIVE_SAFETY_INTERFACE_H_
 
 #include "log.h"
+#include "geometry.h"
+
+#include <boost/thread.hpp>
+#include <atomic>
 
 #include "SystemInterface.h"
 
@@ -13,7 +17,12 @@
 class ActiveSafetyInterface: public SystemInterface{
     friend class ActiveSafety;
 public:
-    ActiveSafetyInterface(): _global_repulsion_strength(1), _minimum_range(0) {}
+    ActiveSafetyInterface();
+    ~ActiveSafetyInterface(){
+        /*_thrd.interrupt();
+        _thrd.join();*/
+        //FIXME: properly clear thread!
+    }
     
     /* Sets the target position in the global frame */
     /* NOTE: ARCHITECTURE FUNCTION */
@@ -43,9 +52,14 @@ public:
         return _minimum_range;
     }
 private:
+    void update();
+    
     Point _target;
     double _global_repulsion_strength;
     double _minimum_range;
+    
+    boost::thread _thrd;
+    std::atomic_bool _thrd_running;
 };
 
 #endif

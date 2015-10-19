@@ -46,6 +46,7 @@ add_library(i2c
 )
 add_executable(active_safety
     src/main.cpp
+    src/interfaces/ActiveSafetyInterface.cpp
     src/interfaces/TestSonarInterface.cpp
     src/interfaces/RosSonarInterface.cpp
     src/interfaces/RosControllerInterface.cpp
@@ -56,4 +57,6 @@ add_executable(active_safety
     src/modules/NearSpaceDetector.cpp
     src/modules/ActiveSafety.cpp
 )
-target_link_libraries(active_safety bjos i2c geometry ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt)
+
+# FIXME: zmq should not be necessary !!!
+target_link_libraries(active_safety bjos bjcomm zmq i2c geometry ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt)
