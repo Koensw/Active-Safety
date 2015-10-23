@@ -50,7 +50,7 @@ ActiveSafety *active_safety = 0;
 //FIXME: TEMPORARY
 PhysicalSonarInterface *phys_sonar;
 
-#ifdef ROSMODE
+#ifdef ROS_MODE
 //init the ROS simulation
 bool rosInit(int argc, char **argv){
     Log::info("ActiveSafetyLoader", "Initializing ROS mode...");
