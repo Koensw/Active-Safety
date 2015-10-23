@@ -6,7 +6,7 @@
 #include "ros/ros.h"
 #include "px4/vehicle_local_position.h"
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
 
 #include "ControllerInterface.h"
 

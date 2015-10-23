@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "log.h"
+#include <bjos/libs/log.h>
 
 #include "helpers/Potential.h"
 #include "sensors/DistanceSensor.h"

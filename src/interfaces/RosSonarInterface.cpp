@@ -1,6 +1,6 @@
 #include "RosSonarInterface.h"
 
-#include "log.h"
+#include <bjos/libs/log.h>
 
 #include "ros/ros.h"
 

@@ -3,6 +3,8 @@
 
 #include <list>
 
+#include <bjos/libs/geometry.h>
+
 #include "helpers/Potential.h"
 #include "sensors/DistanceSensor.h"
 

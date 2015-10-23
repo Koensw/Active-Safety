@@ -3,7 +3,7 @@
 
 #include <list>
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
 
 #include "helpers/Potential.h"
 

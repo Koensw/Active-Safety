@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
-#add_definitions(-D__PX4_ROS)
-#add_definitions(-D__EXPORT=)
+add_definitions(-D__PX4_ROS)
+add_definitions(-D__EXPORT=)
 project(active_safety)
 
 # set required dependencies
@@ -35,28 +35,22 @@ catkin_package(
 )
 
 # add libraries and build executable
-include_directories(libs/)
 include_directories(src/)
+include_directories(libs/)
 include_directories(models/)
-add_library(geometry
-    libs/geometry.cpp
-)
-add_library(i2c
-    libs/i2c.cpp
-)
+
 add_executable(active_safety
-    src/main.cpp
+    src/loader.cpp
     src/interfaces/ActiveSafetyInterface.cpp
     src/interfaces/TestSonarInterface.cpp
     src/interfaces/RosSonarInterface.cpp
     src/interfaces/RosControllerInterface.cpp
     src/interfaces/DevantechSonarInterface.cpp
     src/helpers/Potential.cpp
-    src/helpers/SonarReader.cpp
     src/sensors/SonarSensor.cpp
     src/modules/NearSpaceDetector.cpp
     src/modules/ActiveSafety.cpp
 )
 
 # FIXME: zmq should not be necessary !!!
-target_link_libraries(active_safety bjos bjcomm zmq i2c geometry ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt)
+target_link_libraries(active_safety bjos bjcomm zmq ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt)

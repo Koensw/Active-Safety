@@ -1,8 +1,5 @@
 #include "ActiveSafetyInterface.h"
 
-#include "log.h"
-#include "geometry.h"
-
 #include <boost/thread.hpp>
 #include <bjcomm/subscriber.h>
 #include <bjcomm/poller.h>
@@ -17,7 +14,7 @@ ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(1), _
 void ActiveSafetyInterface::update(){
     Subscriber sub("tcp://*:5556");
     bool ret = sub.start();
-    if(!ret) Log::error("Failed to load communication");
+    if(!ret) Log::error("ActiveSafetyInterface", "Failed to load communication");
             
     Poller poller;
     int SUBSCRIBER = poller.add(&sub);

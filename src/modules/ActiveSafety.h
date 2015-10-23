@@ -1,7 +1,7 @@
 #ifndef _BLUEJAY_ACTIVE_SAFETY_H_
 #define _BLUEJAY_ACTIVE_SAFETY_H_
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
 
 #include "modules/NearSpaceDetector.h"
 #include "interfaces/ControllerInterface.h"

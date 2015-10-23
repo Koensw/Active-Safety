@@ -1,6 +1,6 @@
 #include "TestSonarInterface.h"
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
 
 #include "ros/ros.h"
 

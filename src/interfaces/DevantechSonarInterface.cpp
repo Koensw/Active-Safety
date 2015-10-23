@@ -1,7 +1,7 @@
 #include "DevantechSonarInterface.h"
 
-#include "geometry.h"
-#include "i2c.h"
+#include <bjos/libs/geometry.h>
+#include <bjos/libs/i2c.h>
 
 void DevantechSonarInterface::readDistance(){
     //request for a distance read in cm

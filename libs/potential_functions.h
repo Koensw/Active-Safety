@@ -1,7 +1,7 @@
 #ifndef _BLUEJAY_POTENTIALS_H_
 #define _BLUEJAY_POTENTIALS_H_
 
-#include "geometry.h" 
+#include <bjos/libs/geometry.h>
 
 #define POT_INFINITY std::numeric_limits<double>::infinity()
 

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
 
 /* 
  * Returns the sensor model of the sonars

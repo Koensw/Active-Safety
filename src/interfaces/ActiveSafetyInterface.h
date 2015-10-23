@@ -1,8 +1,8 @@
 #ifndef _BLUEJAY_ACTIVE_SAFETY_INTERFACE_H_
 #define _BLUEJAY_ACTIVE_SAFETY_INTERFACE_H_
 
-#include "log.h"
-#include "geometry.h"
+#include <bjos/libs/log.h>
+#include <bjos/libs/geometry.h>
 
 #include <boost/thread.hpp>
 #include <atomic>

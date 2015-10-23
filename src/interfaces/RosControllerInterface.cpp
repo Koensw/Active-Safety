@@ -2,7 +2,7 @@
 
 #include "geometry_msgs/Point.h"
 
-#include "log.h"
+#include <bjos/libs/log.h>
 
 RosControllerInterface::RosControllerInterface(std::string pub_topic, std::string rec_topic){
     _topic = pub_topic;

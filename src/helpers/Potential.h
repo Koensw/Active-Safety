@@ -3,14 +3,14 @@
 
 #include <utility>
 
-#include "geometry.h"
+#include <bjos/libs/geometry.h>
+
 #include "potential_functions.h"
 
 /*
  * Represents a potential in a potential field
  */
 
-//ALERT: define copy behaviour
 class Potential{
 public:
     Potential(Point pos, PotentialFunction *potential_function, double strength = 1): 

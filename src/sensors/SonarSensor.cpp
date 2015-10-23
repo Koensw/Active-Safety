@@ -3,7 +3,7 @@
 #include "helpers/Potential.h"
 #include "potential_functions.h"
 
-#include "log.h"
+#include <bjos/libs/log.h>
 
 std::list<Potential> SonarSensor::getPotentials(){
     //check if object in range

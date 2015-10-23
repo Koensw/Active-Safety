@@ -1,17 +1,17 @@
 #include "ActiveSafety.h"
 
-#include "log.h"
-#include "geometry.h"
+#include <bjos/libs/log.h>
+#include <bjos/libs/geometry.h>
 
 #include "modules/NearSpaceDetector.h"
 #include "helpers/Potential.h"
 
 void ActiveSafety::setMinimumDistanceInRange(double, double, double, double){
-    Log::fatal("ActiveSafety::setMinimumDistanceInRange not implemented yet!");
+    Log::fatal("ActiveSafety", "ActiveSafety::setMinimumDistanceInRange not implemented yet!");
 }
 
 void ActiveSafety::setRepulsionStrengthInRange(double, double, double, double){
-    Log::fatal("ActiveSafety::setRepulsionStrengthInRange not implemented yet!");
+    Log::fatal("ActiveSafety", "ActiveSafety::setRepulsionStrengthInRange not implemented yet!");
 }
 
 void ActiveSafety::update(){
@@ -33,7 +33,7 @@ void ActiveSafety::update(){
         pot_iter->setStrength(getGlobalRepulsionStrength());
         Vector pot_gradient = pot_iter->getGradientOrigin();
         gradient = gradient + pot_gradient;
-	Log::info("POTENTIAL");
+	Log::info("ActiveSafety", "POTENTIAL");
     }
     
     //convert the target to local frame
