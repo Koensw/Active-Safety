@@ -1,19 +1,22 @@
 /*
  * Startup code for the project, decides which mode to run 
  */
-#define ROS_MODE
+//#define ROS_MODE
+
+//#ifdef ROS_MODE
 
 #ifdef ROS_MODE
 #include "ros/ros.h"
+#include "interfaces/RosSonarInterface.h"
+#include "interfaces/RosControllerInterface.h"
 #endif
 
 #include <chrono>
 #include <thread>
 
-#include "interfaces/RosSonarInterface.h"
-#include "interfaces/TestSonarInterface.h"
+//#include "interfaces/RosSonarInterface.h"
 #include "interfaces/BJOSControllerInterface.h"
-#include "interfaces/RosControllerInterface.h"
+//#include "interfaces/RosControllerInterface.h"
 #include "interfaces/PhysicalSonarInterface.h"
 #include "interfaces/BJOSSonarInterface.h"
 #include "sensors/SonarSensor.h"
@@ -47,6 +50,7 @@ ActiveSafety *active_safety = 0;
 //FIXME: TEMPORARY
 PhysicalSonarInterface *phys_sonar;
 
+#ifdef ROSMODE
 //init the ROS simulation
 bool rosInit(int argc, char **argv){
     Log::info("ActiveSafetyLoader", "Initializing ROS mode...");
@@ -169,6 +173,7 @@ void rosRun(){
         ++cnt;
     }
 }
+#endif
 
 //init the BJOS
 bool BJOSInit(int, char**){
@@ -215,7 +220,6 @@ bool BJOSInit(int, char**){
     controller_interface = new BJOSControllerInterface(flight_controller);
     
     //wait for the controller and sensors interfaces to be available
-    ros::Rate wait_init_rate(100);
     for(size_t i=0; i<sonar_interfaces.size(); ++i){
         while(Process::isActive() && !sonar_interfaces[i]->isAvailable()) {
             //TODO: implement a time lib function
@@ -276,12 +280,12 @@ void BJOSFinalize(){
     
     //delete bjos controllers
     delete sonar_controller;
+    delete flight_controller;
     
     //delete near space and active safety
     delete near_space_detector;
     delete active_safety;
     
-    ros::shutdown();
     Log::info("ActiveSafetyLoader", "Finished finalization");
 }
 

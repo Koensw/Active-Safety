@@ -3,8 +3,7 @@
 
 #include <string>
 
-#include "ros/ros.h"
-#include "sensor_msgs/Range.h"
+#include <bjos/libs/geometry.h>
 
 #include "SonarInterface.h"
 

@@ -1,9 +1,5 @@
 #include "TestSonarInterface.h"
 
-#include <bjos/libs/geometry.h>
-
-#include "ros/ros.h"
-
 TestSonarInterface::TestSonarInterface(){
     //TODO: also set other fields
     _range = 0;

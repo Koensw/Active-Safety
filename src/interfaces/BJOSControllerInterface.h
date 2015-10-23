@@ -15,7 +15,10 @@ using namespace bjos;
 //TODO: currently not thread safe
 class BJOSControllerInterface : public ControllerInterface{
 public:
-    BJOSControllerInterface(FlightController *controller): _controller(controller) {}
+    BJOSControllerInterface(FlightController *controller): _controller(controller) {
+        //FIXME: check for proper flightcontroller
+        set_available(true);
+    }
     
     /* NOTE: ARCHITECTURE FUNCTION */
     void setPosition(Point){
