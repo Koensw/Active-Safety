@@ -169,7 +169,7 @@ void rosRun(){
         
         rate.sleep();
         ros::spinOnce();
-        
+-        
         ++cnt;
     }
 }
@@ -244,24 +244,26 @@ bool BJOSInit(int, char**){
 
 //run the module
 void BJOSRun(){
-    active_safety->setTargetPoint(Point(0, 0, 3));
-    active_safety->setGlobalRepulsionStrength(0.3);
-    active_safety->setTargetAttractionStrength(0.2);
+    active_safety->setTargetPoint(Point(0, 0, 0));
+    active_safety->setGlobalRepulsionStrength(0.8);
+    active_safety->setTargetAttractionStrength(0.3);
+    
+    active_safety->setMaximumVelocity(5);
     while(Process::isActive()){
-        for(size_t i=0; i<sonar_interfaces.size(); ++i){
+        /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("ActiveSafetyLoader", "Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
-        }
+        }*/
         
         //get current position from controller
         Point cur = controller_interface->getPosition();
-        Log::info("ActiveSafetyLoader", "Position %f %f %f", cur.x, cur.y, cur.z);;
+//        Log::info("ActiveSafetyLoader", "Position %f %f %f --- Direction: %f %f %f", cur.x, cur.y, cur.z);;
         
         //update active safety
         active_safety->update();
         
         //get direction where flying to
         Vector direction = active_safety->getDirection();
-        Log::info("ActiveSafetyLoader", "Direction %f %f %f", direction.x, direction.y, direction.z);
+        Log::info("ActiveSafetyLoader", "Position %f %f %f --- Direction %f %f %f", cur.x, cur.y, cur.z, direction.x, direction.y, direction.z);
         
         //TODO: implement a time lib function
         std::this_thread::sleep_for(std::chrono::milliseconds(1));

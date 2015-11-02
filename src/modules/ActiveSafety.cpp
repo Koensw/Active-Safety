@@ -33,7 +33,7 @@ void ActiveSafety::update(){
         pot_iter->setStrength(getGlobalRepulsionStrength());
         Vector pot_gradient = pot_iter->getGradientOrigin();
         gradient = gradient + pot_gradient;
-	Log::info("ActiveSafety", "POTENTIAL");
+	//Log::info("ActiveSafety", "POTENTIAL");
     }
     
     //convert the target to local frame
@@ -45,13 +45,17 @@ void ActiveSafety::update(){
     gradient = gradient + target_pot.getGradientOrigin();
     
     //TODO: trigger the necessary events
-    _direction_gradient = gradient;
+    //_direction_gradient = gradient;
     
     //push to the controller
-    Vector velocity = _direction_gradient;
+    Vector velocity = gradient;
     //Log::info("LENGTH: %f", velocity.length());
-    if(velocity.length() > 0.8) velocity.scale(0.8/velocity.length());
+    //Log::info("TEST: ", "%f %f", _max_velocity, velocity.length());
+    if(velocity.length() > _max_velocity) velocity.scale(_max_velocity/velocity.length());
     _controller_interface->setVelocity(velocity);
+    
+    //set gradient
+    _direction_gradient = velocity;
     
     //enable the active safety interface which has is now properly started up
     _active_safety_interface->set_available(true);
