@@ -25,7 +25,8 @@ public:
         //return - TODO: not yet implemented
     }
     Point getPosition(){
-        return _controller->getPose().position;
+        //ALERT: we should NOT use NED here, change this when world frame is properly defined!
+        return _controller->getPoseNED().position;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
@@ -34,7 +35,7 @@ public:
         head.velocity.vx = v.x;
         head.velocity.vy = v.y;
         head.velocity.vz = v.z;
-        _controller->setTarget(SET_TARGET_VELOCITY, Pose(), head);
+        _controller->setTargetCF(SET_TARGET_VELOCITY, Pose(), head);
     }
 private:
     FlightController *_controller;
