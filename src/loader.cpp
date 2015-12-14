@@ -244,12 +244,12 @@ bool BJOSInit(int, char**){
 
 //run the module
 void BJOSRun(){
-    active_safety->setTargetPoint(Point(0, 0, 0));
+    active_safety->setTargetPoint(Point(0, 0, 2));
     active_safety->setGlobalRepulsionStrength(0);
     active_safety->setTargetAttractionStrength(0.5);
     
     active_safety->setMinimumVelocityXY(1e6);
-    active_safety->setMinimumVelocityZ(0);
+    active_safety->setMinimumVelocityZ(0.1);
     active_safety->setMaximumVelocity(1.0);
     while(Process::isActive()){
         /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
