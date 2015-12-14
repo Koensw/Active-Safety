@@ -45,17 +45,18 @@ void ActiveSafety::update(){
     gradient = gradient + target_pot.getGradientOrigin();
     
     //TODO: trigger the necessary events
-    //_direction_gradient = gradient;
     
-    //push to the controller
-    Vector velocity = gradient;
-    //Log::info("LENGTH: %f", velocity.length());
-    //Log::info("TEST: ", "%f %f", _max_velocity, velocity.length());
-    if(velocity.length() > _max_velocity) velocity.scale(_max_velocity/velocity.length());
-    _controller_interface->setVelocity(velocity);
+    //set velocity zero if under minimum velocity (triggers position hold on pixhawk)
+    if(gradient.x < _min_velocity_xy) gradient.x = 0;
+    if(gradient.y < _min_velocity_xy) gradient.y = 0;
+    if(gradient.z < _min_velocity_z) gradient.z = 0;
+    
+    //limit maximum velocity
+    if(gradient.length() > _max_velocity) gradient.scale(_max_velocity/gradient.length());
+    _controller_interface->setVelocity(gradient);
     
     //set gradient
-    _direction_gradient = velocity;
+    _direction_gradient = gradient;
     
     //enable the active safety interface which has is now properly started up
     _active_safety_interface->set_available(true);

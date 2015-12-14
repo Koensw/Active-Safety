@@ -43,6 +43,20 @@ public:
         return _max_velocity;
     }
     
+    /* Set minimum velocity for xy and z */
+    void setMinimumVelocityXY(double velo){
+        _min_velocity_xy = velo;
+    }
+    double getMinimumVelocityXY(){
+        return _min_velocity_xy;
+    }
+    void setMinimumVelocityZ(double velo){
+        _min_velocity_z = velo;
+    }
+    double setMinimumVelocityZ(){
+        return _min_velocity_z;
+    }
+    
     /* Set range and repulsion in range 
      * ALERT: not implemented yet
      */
@@ -93,6 +107,9 @@ private:
     
     double _target_attraction_strength;
     double _max_velocity;
+    
+    double _min_velocity_xy;
+    double _min_velocity_z;
     
     Vector _direction_gradient;
 };
