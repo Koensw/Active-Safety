@@ -149,8 +149,8 @@ void rosRun(){
     active_safety->setTargetPoint(Point(0, 0, 3));
     
     //->setGlobalRepulsionStrength(5);
-    active_safety->setGlobalRepulsionStrength(0.3);
-    active_safety->setTargetAttractionStrength(0.2);
+    active_safety->setGlobalRepulsionStrength(0);
+    active_safety->setTargetAttractionStrength(0.3);
     while(Process::isActive()){
         for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("ActiveSafetyLoader", "Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
@@ -245,10 +245,10 @@ bool BJOSInit(int, char**){
 //run the module
 void BJOSRun(){
     active_safety->setTargetPoint(Point(0, 0, 0));
-    active_safety->setGlobalRepulsionStrength(0.8);
+    active_safety->setGlobalRepulsionStrength(0);
     active_safety->setTargetAttractionStrength(0.3);
     
-    active_safety->setMaximumVelocity(5);
+    active_safety->setMaximumVelocity(1.0);
     while(Process::isActive()){
         /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("ActiveSafetyLoader", "Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
