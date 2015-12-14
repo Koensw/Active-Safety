@@ -13,7 +13,8 @@
 class ActiveSafety{
 public:
     ActiveSafety(NearSpaceDetector *near_space_detector, ControllerInterface *controller_interface, ActiveSafetyInterface *active_safety_interface): 
-    _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), _target_attraction_strength(1), _max_velocity(1e6) {};
+    _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), 
+    _target_attraction_strength(1), _max_velocity(1e6), _min_velocity_z(0), _min_velocity_xy(0) {};
     
     /* Set global range */
     void setGlobalMinimumDistance(double distance){
