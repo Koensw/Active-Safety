@@ -26,7 +26,8 @@ public:
     }
     Point getPosition(){
         //ALERT: we should NOT use NED here, change this when world frame is properly defined!
-        return _controller->getPoseNED().position;
+        Point position = _controller->getPoseWF().position;
+        return position;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
