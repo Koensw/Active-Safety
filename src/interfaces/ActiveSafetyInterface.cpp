@@ -26,7 +26,7 @@ void ActiveSafetyInterface::update(){
                 msg = sub.receive();
         
                 if(msg.getType() == "position"){
-                    int x, y, z;
+                    double x, y, z;
                     msg.getStream() >> x >> y >> z;
                     setTargetPosition(Point(x, y, z));
                     std::cout << "Set position to (" << x << "," << y << "," << z << ")" << std::endl;
