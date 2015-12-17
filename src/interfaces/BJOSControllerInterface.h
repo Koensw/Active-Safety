@@ -25,9 +25,10 @@ public:
         //return - TODO: not yet implemented
     }
     Point getPosition(){
-        //ALERT: we should NOT use NED here, change this when world frame is properly defined!
-        Point position = _controller->getPoseWF().position;
-        return position;
+        return _controller->getPoseWF().position;
+    }
+    double getYaw(){
+        return _controller->getPoseWF().orientation.y;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */

@@ -23,7 +23,8 @@ void ActiveSafety::update(){
     
     //get the last position of the controller
     Point current_position = _controller_interface->getPosition();
-
+    double current_yaw = _controller_interface->getYaw();
+    
     //get all potentials
     Vector gradient;
     std::list<Potential> potentials = _near_space_detector->getPotentials();
@@ -33,11 +34,13 @@ void ActiveSafety::update(){
         pot_iter->setStrength(getGlobalRepulsionStrength());
         Vector pot_gradient = pot_iter->getGradientOrigin();
         gradient = gradient + pot_gradient;
-	//Log::info("ActiveSafety", "POTENTIAL");
     }
     
     //convert the target to local frame
     Point relative_target = getTargetPoint() - current_position;
+    //convert the target to body frame
+    RotationMatrix Rz(-current_yaw, 'z');
+    relative_target = Rz.rotatePoint(relative_target);
     
     //make the attractive potential
     //FIXME: configure near space behaviour
@@ -53,9 +56,9 @@ void ActiveSafety::update(){
     
     //limit maximum velocity
     if(gradient.length() > _max_velocity) gradient.scale(_max_velocity/gradient.length());
-    _controller_interface->setVelocity(gradient);
     
-    //set gradient
+    //set gradient and forward to controller
+    _controller_interface->setVelocity(gradient);
     _direction_gradient = gradient;
     
     //enable the active safety interface which has is now properly started up

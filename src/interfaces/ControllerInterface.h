@@ -20,6 +20,7 @@ public:
     
     /* Gets the current position from the controller */
     virtual Point getPosition() = 0;
+    virtual double getYaw() = 0;
 };
 
 #endif
