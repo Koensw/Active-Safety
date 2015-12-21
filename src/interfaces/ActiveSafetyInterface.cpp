@@ -13,7 +13,10 @@ void ActiveSafetyInterface::update(){
     try{
         Subscriber sub("modules/active_safety");
         bool ret = sub.start();
-        if(!ret) Log::error("ActiveSafetyInterface", "Failed to load communication");
+        if(!ret) {
+		Log::error("ActiveSafetyInterface", "Failed to load communication");
+		return;
+	}
                 
         int SUBSCRIBER = _poller.add(&sub);
         while(true){
