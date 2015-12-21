@@ -12,7 +12,7 @@ ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(1), _
 
 void ActiveSafetyInterface::update(){
     try{
-        Subscriber sub("tcp://*:5556");
+        Subscriber sub("modules/active_safety");
         bool ret = sub.start();
         if(!ret) Log::error("ActiveSafetyInterface", "Failed to load communication");
                 
