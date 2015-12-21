@@ -2,7 +2,6 @@
 
 #include <boost/thread.hpp>
 #include <bjcomm/subscriber.h>
-#include <bjcomm/poller.h>
 
 using namespace bjcomm;
 
@@ -16,12 +15,13 @@ void ActiveSafetyInterface::update(){
         bool ret = sub.start();
         if(!ret) Log::error("ActiveSafetyInterface", "Failed to load communication");
                 
-        Poller poller;
-        int SUBSCRIBER = poller.add(&sub);
+        int SUBSCRIBER = _poller.add(&sub);
         while(true){
-            poller.poll();        
+            _poller.poll();        
                     
-            if(poller.hasMsg(SUBSCRIBER)){
+            boost::this_thread::interruption_point();
+            
+            if(_poller.hasMsg(SUBSCRIBER)){
                 Message msg;
                 msg = sub.receive();
         

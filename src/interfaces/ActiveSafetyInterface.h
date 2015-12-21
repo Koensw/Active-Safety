@@ -3,6 +3,7 @@
 
 #include <bjos/libs/log.h>
 #include <bjos/libs/geometry.h>
+#include <bjcomm/poller.h>
 
 #include <boost/thread.hpp>
 #include <atomic>
@@ -19,9 +20,9 @@ class ActiveSafetyInterface: public SystemInterface{
 public:
     ActiveSafetyInterface();
     ~ActiveSafetyInterface(){
-        /*_thrd.interrupt();
-        _thrd.join();*/
-        //FIXME: properly clear thread!
+        _poller.interrupt();
+        _thrd.interrupt();
+        _thrd.join();
     }
     
     /* Sets the target position in the global frame */
@@ -53,6 +54,8 @@ public:
     }
 private:
     void update();
+    
+    bjcomm::Poller _poller;
     
     Point _target;
     double _global_repulsion_strength;

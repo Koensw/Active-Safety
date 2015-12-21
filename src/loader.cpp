@@ -210,11 +210,11 @@ bool BJOSInit(int, char**){
     }
     
     //retrieve the flight controller
-    flight_controller = new FlightController();
+    /*flight_controller = new FlightController();
     if(!bjos->getController("flight", flight_controller)){
         Log::error("ActiveSafetyLoader", "Cannot continue, current loader does not have flight controller!");
         return false;
-    }
+    }*/
     
     //load the controller interface
     controller_interface = new BJOSControllerInterface(flight_controller);

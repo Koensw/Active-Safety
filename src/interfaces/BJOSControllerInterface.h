@@ -25,10 +25,10 @@ public:
         //return - TODO: not yet implemented
     }
     Point getPosition(){
-        return _controller->getPoseWF().position;
+        return Point();// _controller->getPoseWF().position;
     }
     double getYaw(){
-        return _controller->getPoseWF().orientation.y;
+        return 0.0;// _controller->getPoseWF().orientation.y;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
@@ -37,7 +37,7 @@ public:
         head.velocity.vx = v.x;
         head.velocity.vy = v.y;
         head.velocity.vz = v.z;
-        _controller->setTargetCF(SET_TARGET_VELOCITY, Pose(), head);
+        //_controller->setTargetCF(SET_TARGET_VELOCITY, Pose(), head);
     }
 private:
     FlightController *_controller;
