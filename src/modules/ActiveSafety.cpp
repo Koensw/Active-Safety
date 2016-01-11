@@ -39,8 +39,8 @@ void ActiveSafety::update(){
     //convert the target to local frame
     Point relative_target = getTargetPoint() - current_position;
     //convert the target to body frame
-    RotationMatrix Rz(-current_yaw, 'z');
-    relative_target = Rz.rotatePoint(relative_target);
+    RotationMatrix rot(-current_yaw, 'z');
+    relative_target = rot * relative_target;
     
     //make the attractive potential
     //FIXME: configure near space behaviour
@@ -50,12 +50,12 @@ void ActiveSafety::update(){
     //TODO: trigger the necessary events
     
     //set velocity zero if under minimum velocity (triggers position hold on pixhawk)
-    if(fabs(gradient.x) < _min_velocity_xy) gradient.x = 0;
-    if(fabs(gradient.y) < _min_velocity_xy) gradient.y = 0;
-    if(fabs(gradient.z) < _min_velocity_z) gradient.z = 0;
+    if(fabs(gradient.x()) < _min_velocity_xy) gradient.x() = 0;
+    if(fabs(gradient.y()) < _min_velocity_xy) gradient.y() = 0;
+    if(fabs(gradient.z()) < _min_velocity_z) gradient.z() = 0;
     
     //limit maximum velocity
-    if(gradient.length() > _max_velocity) gradient.scale(_max_velocity/gradient.length());
+    if(gradient.norm() > _max_velocity) gradient *= _max_velocity/gradient.norm();
     
     //set gradient and forward to controller
     _controller_interface->setVelocity(gradient);

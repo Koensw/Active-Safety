@@ -51,7 +51,7 @@ double NearSpaceDetector::getDistanceAt(double yaw, double pitch){
     //TODO: trigger a warning if too far?
     
     if(nearest_potential == _potentials.end()) return _global_min_range;
-    else return nearest_potential->getPosition().distanceOrigin();
+    else return nearest_potential->getPosition().norm();
 }
 
 double NearSpaceDetector::getMinimunDistanceInRange(double yawMin, double yawMax, double pitchMin, double pitchMax){
@@ -61,7 +61,7 @@ double NearSpaceDetector::getMinimunDistanceInRange(double yawMin, double yawMax
         
         //check if in range
         if(yawMin < yaw_pitch.first && yaw_pitch.first < yawMax && pitchMin < yaw_pitch.second && yaw_pitch.second < pitchMax){
-            minimum_distance = std::min(minimum_distance, pot_iter->getPosition().distanceOrigin());
+            minimum_distance = std::min(minimum_distance, pot_iter->getPosition().norm());
         }
     }
     return minimum_distance;
@@ -78,13 +78,13 @@ void NearSpaceDetector::update(){
         for(std::list<Potential>::iterator pot_iter = sensor_potentials.begin(); pot_iter != sensor_potentials.end();){
             //rotate the potential to align the sensor and the body frame
             //DEBUG: std::cout << pot_iter->getPosition().x << " " << pot_iter->getPosition().y << " " << pot_iter->getPosition().z << std::endl;
-            pot_iter->rotate(getTaitBryanMatrix(-(*sen_iter)->getPose().orientation));
+            pot_iter->rotate(RotationMatrix::getTaitBryan(-(*sen_iter)->getPose().orientation));
             
             //translate the potential frame to the body frame
             pot_iter->translate((*sen_iter)->getPose().position);
             
             //check if we keep this potential or that is out of range now
-            if(pot_iter->getPosition().distanceOrigin() > _global_min_range) pot_iter = sensor_potentials.erase(pot_iter);
+            if(pot_iter->getPosition().norm() > _global_min_range) pot_iter = sensor_potentials.erase(pot_iter);
             else ++pot_iter;
         }
         //TODO: trigger a potential event if this sensor did not had a potential before

@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(active_safety)
 
+# load eigen
+find_package( PkgConfig )
+pkg_check_modules( EIGEN3 REQUIRED eigen3 )
+include_directories( ${EIGEN3_INCLUDE_DIRS} )
+
 # set required dependencies
 find_package(Boost COMPONENTS system thread signals filesystem REQUIRED)
 

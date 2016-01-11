@@ -158,14 +158,14 @@ void rosRun(){
         
         //get current position from controller
         Point cur = controller_interface->getPosition();
-        Log::info("ActiveSafetyLoader", "Position %f %f %f", cur.x, cur.y, cur.z);;
+        Log::info("ActiveSafetyLoader", "Position %f %f %f", cur.x(), cur.y(), cur.z());;
         
         //update active safety
         active_safety->update();
         
         //get direction where flying to
         Vector direction = active_safety->getDirection();
-        Log::info("ActiveSafetyLoader", "Direction %f %f %f", direction.x, direction.y, direction.z);
+        Log::info("ActiveSafetyLoader", "Direction %f %f %f", direction.x(), direction.y(), direction.z());
         
         rate.sleep();
         ros::spinOnce();
@@ -266,7 +266,7 @@ void BJOSRun(){
         
         //get direction where flying to
         Vector direction = active_safety->getDirection();
-        Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x, cur.y, cur.z, yaw, direction.x, direction.y, direction.z);
+        Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x(), cur.y(), cur.z(), yaw, direction.x(), direction.y(), direction.z());
         
         //TODO: implement a time lib function
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

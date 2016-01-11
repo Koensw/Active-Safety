@@ -28,16 +28,12 @@ public:
         return _controller->getPoseWF().position;
     }
     double getYaw(){
-        return _controller->getPoseWF().orientation.y;
+        return _controller->getPoseWF().orientation.y();
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
-    void setVelocity(Vector v){
-        Heading head;
-        head.velocity.vx = v.x;
-        head.velocity.vy = v.y;
-        head.velocity.vz = v.z;
-        _controller->setTargetCF(SET_TARGET_VELOCITY, Pose(), head);
+    void setVelocity(Vector vel){
+        _controller->setTargetVelocityCF(vel);
     }
 private:
     FlightController *_controller;

@@ -11,8 +11,8 @@ std::list<Potential> SonarSensor::getPotentials(){
     
     //get the position of the potential in the sensor frame
     Point pot_pos;
-    pot_pos.y = pot_pos.z = 0;
-    pot_pos.x = getDistance();
+    pot_pos.y() = pot_pos.z() = 0;
+    pot_pos.x() = getDistance();
     
     //use a hyperbolic potential for the detection
     HyperbolicPotentialFunction *potential_function = new HyperbolicPotentialFunction();
