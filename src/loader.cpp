@@ -246,10 +246,10 @@ bool BJOSInit(int, char**){
 void BJOSRun(){
     active_safety->setTargetPoint(Point(0, 0, 1));
     active_safety->setGlobalRepulsionStrength(0);
-    active_safety->setTargetAttractionStrength(1);
+    active_safety->setTargetAttractionStrength(0.5);
     
-    active_safety->setMinimumVelocityXY(0.01);
-    active_safety->setMinimumVelocityZ(0.01);
+    active_safety->setMinimumVelocityXY(0.2);
+    active_safety->setMinimumVelocityZ(0.05);
     active_safety->setMaximumVelocity(1.0);
     while(Process::isActive()){
         /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
@@ -284,9 +284,10 @@ void BJOSFinalize(){
     delete active_safety_interface;
     
     //delete bjos controllers
-    delete sonar_controller;
+   // delete sonar_controller;
     delete flight_controller;
-    
+    delete sonar_controller;
+
     //delete near space and active safety
     delete near_space_detector;
     delete active_safety;
