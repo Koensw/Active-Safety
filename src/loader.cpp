@@ -191,7 +191,7 @@ bool BJOSInit(int, char**){
     near_space_detector = new NearSpaceDetector();
     
     //retrieve the sonar controller
-    sonar_controller = new SonarController();
+    /*sonar_controller = new SonarController();
     if(!bjos->getController("sonar", sonar_controller)){
         Log::error("ActiveSafetyLoader", "Cannot continue, current loader does not have sonar controller!");
         return false;
@@ -207,7 +207,7 @@ bool BJOSInit(int, char**){
         //creates a sensor and register it
         SonarSensor *sonar_sensor = new SonarSensor(sonar_data[i].pose, sonar_interface);
         near_space_detector->registerSensor(sonar_sensor);
-    }
+    }*/
     
     //retrieve the flight controller
     flight_controller = new FlightController();
@@ -251,14 +251,15 @@ void BJOSRun(){
     active_safety->setMinimumVelocityXY(0.2);
     active_safety->setMinimumVelocityZ(0.05);
     active_safety->setMaximumVelocity(1.0);
+
     while(Process::isActive()){
         /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("ActiveSafetyLoader", "Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
         }*/
-        
+
         //get current position from controller
         Point cur = controller_interface->getPosition();
-        double yaw = controller_interface->getYaw();
+        float yaw = controller_interface->getYaw();
 //        Log::info("ActiveSafetyLoader", "Position %f %f %f --- Direction: %f %f %f", cur.x, cur.y, cur.z);;
         
         //update active safety
