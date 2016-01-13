@@ -7,14 +7,12 @@ pkg_check_modules( EIGEN3 REQUIRED eigen3 )
 include_directories( ${EIGEN3_INCLUDE_DIRS} )
 
 # set required dependencies
-find_package(Boost COMPONENTS system thread signals filesystem REQUIRED)
+find_package(Boost COMPONENTS atomic system thread signals filesystem REQUIRED)
 
 include_directories(include ${Boost_INCLUDE_DIRS})
 
 # set compiler and flags
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
-link_directories("/usr/lib/arm-linux-gnueabihf/")
 
 # add libraries and build executable
 include_directories(src/)
