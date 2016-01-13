@@ -1,5 +1,5 @@
 mkdir -p build
 cd build
 cmake ..
-make -j4
+make -j $(nproc --ignore=1)
 
