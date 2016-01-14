@@ -8,7 +8,6 @@ include_directories( ${EIGEN3_INCLUDE_DIRS} )
 
 # set required dependencies
 find_package(Boost COMPONENTS atomic system thread signals filesystem REQUIRED)
-
 include_directories(include ${Boost_INCLUDE_DIRS})
 
 # set compiler and flags
