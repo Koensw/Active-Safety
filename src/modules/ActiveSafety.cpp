@@ -26,7 +26,7 @@ void ActiveSafety::update(){
     double current_yaw = _controller_interface->getYaw();
     
     //get all potentials
-    Vector gradient;
+    Vector gradient = {0, 0, 0};
     std::list<Potential> potentials = _near_space_detector->getPotentials();
     for(std::list<Potential>::iterator pot_iter = potentials.begin(); pot_iter != potentials.end(); ++pot_iter){
         //TODO: check if in range
@@ -56,7 +56,7 @@ void ActiveSafety::update(){
     
     //limit maximum velocity
     if(gradient.norm() > _max_velocity) gradient *= _max_velocity/gradient.norm();
-    
+        
     //set gradient and forward to controller
     _controller_interface->setVelocity(gradient);
     _direction_gradient = gradient;
