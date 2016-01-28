@@ -246,9 +246,9 @@ bool BJOSInit(int, char**){
 void BJOSRun(){
     active_safety->setTargetPoint(Point(0, 0, 1));
     active_safety->setGlobalRepulsionStrength(0);
-    active_safety->setTargetAttractionStrength(0.5);
+    active_safety->setTargetAttractionStrength(3);
     
-    active_safety->setMinimumVelocityXY(0.2);
+    active_safety->setMinimumVelocityXY(0.01);
     active_safety->setMinimumVelocityZ(0.05);
     active_safety->setMaximumVelocity(1.0);
 
@@ -268,6 +268,8 @@ void BJOSRun(){
         //get direction where flying to
         Vector direction = active_safety->getDirection();
         Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x(), cur.y(), cur.z(), yaw, direction.x(), direction.y(), direction.z());
+        Point tar = active_safety->getTargetPoint();
+        Log::info("ActiveSafetyLoader", "Target %f %f %f", tar.x(), tar.y(), tar.z());
         
         //TODO: implement a time lib function
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

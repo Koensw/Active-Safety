@@ -25,10 +25,11 @@ public:
         //return - TODO: not yet implemented
     }
     Point getPosition(){
-        return _controller->getPoseWF().position;
+        return _controller->getPositionWF();
     }
     double getYaw(){
-        return _controller->getPoseWF().orientation.y();
+        //return _controller->getOrientationWF().y();
+        return 0;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */

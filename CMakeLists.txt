@@ -11,7 +11,7 @@ find_package(Boost COMPONENTS atomic system thread signals filesystem REQUIRED)
 include_directories(include ${Boost_INCLUDE_DIRS})
 
 # set compiler and flags
-set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-O3 -std=c++11 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
 
 # add libraries and build executable
 include_directories(src/)
