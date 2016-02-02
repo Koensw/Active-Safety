@@ -59,7 +59,7 @@ if(${ROS})
         src/modules/ActiveSafety.cpp
     )
     # FIXME: zmq should not be necessary !!!
-    target_link_libraries(active_safety_ros bjos bjcomm zmq ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt)
+    target_link_libraries(active_safety_ros bjos bjcomm zmq ${catkin_LIBRARIES} ${Boost_LIBRARIES} rt pthread)
 else()
     # normal non ros compile
     add_executable(active_safety
@@ -73,6 +73,6 @@ else()
     )
     
     # FIXME: zmq should not be necessary !!!
-    target_link_libraries(active_safety bjos bjcomm zmq ${Boost_LIBRARIES} rt)
+    target_link_libraries(active_safety bjos bjcomm zmq ${Boost_LIBRARIES} rt pthread)
 endif()
 

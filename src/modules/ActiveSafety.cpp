@@ -39,7 +39,7 @@ void ActiveSafety::update(){
     //convert the target to local frame
     Point relative_target = getTargetPoint() - current_position;
     //convert the target to body frame
-    RotationMatrix rot(-current_yaw, 'z');
+    RotationMatrix rot(current_yaw, 'z');
     relative_target = rot * relative_target;
     
     //make the attractive potential

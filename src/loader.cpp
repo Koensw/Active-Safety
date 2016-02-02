@@ -13,6 +13,7 @@
 
 #include <chrono>
 #include <thread>
+#include <sstream>
 
 //#include "interfaces/RosSonarInterface.h"
 #include "interfaces/BJOSControllerInterface.h"
@@ -32,10 +33,14 @@
 #include <bjos/libs/i2c.h>
 #include <bjos/libs/geometry.h>
 
+#include <bjcomm/subscriber.h>
+#include <bjcomm/message.h>
+
 //include the currently used sensor model
 #include "real_model.h"
 
 using namespace bjos;
+using namespace bjcomm;
 
 std::vector<SonarInterface*> sonar_interfaces;
 ControllerInterface *controller_interface = 0;
@@ -246,12 +251,14 @@ bool BJOSInit(int, char**){
 void BJOSRun(){
     active_safety->setTargetPoint(Point(0, 0, 1));
     active_safety->setGlobalRepulsionStrength(0);
-    active_safety->setTargetAttractionStrength(3);
+    active_safety->setTargetAttractionStrength(0.4);
     
-    active_safety->setMinimumVelocityXY(0.01);
+    active_safety->setMinimumVelocityXY(0.03);
     active_safety->setMinimumVelocityZ(0.05);
     active_safety->setMaximumVelocity(1.0);
 
+    Publisher status_pub("status");
+    status_pub.start();
     while(Process::isActive()){
         /*for(size_t i=0; i<sonar_interfaces.size(); ++i){
             Log::info("ActiveSafetyLoader", "Distance %#1x %f", 0x70+i, sonar_interfaces[i]->getDistance());
@@ -270,6 +277,11 @@ void BJOSRun(){
         Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x(), cur.y(), cur.z(), yaw, direction.x(), direction.y(), direction.z());
         Point tar = active_safety->getTargetPoint();
         Log::info("ActiveSafetyLoader", "Target %f %f %f", tar.x(), tar.y(), tar.z());
+        
+        Vector tar_wf = Eigen::AngleAxisd(-yaw, Eigen::Vector3d::UnitZ()) * tar;
+        std::ostringstream oss;
+        oss << tar_wf.x() << " " << tar_wf.y() << " " << tar_wf.z() << std::endl;
+        status_pub.send(Message("control_direction", oss.str()));
         
         //TODO: implement a time lib function
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

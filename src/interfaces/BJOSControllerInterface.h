@@ -28,8 +28,8 @@ public:
         return _controller->getPositionWF();
     }
     double getYaw(){
-        //return _controller->getOrientationWF().y();
-        return 0;
+        return _controller->getOrientationWF().y();
+        //return 0;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
