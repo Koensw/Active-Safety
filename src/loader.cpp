@@ -278,9 +278,9 @@ void BJOSRun(){
         Point tar = active_safety->getTargetPoint();
         Log::info("ActiveSafetyLoader", "Target %f %f %f", tar.x(), tar.y(), tar.z());
         
-        Vector tar_wf = Eigen::AngleAxisd(-yaw, Eigen::Vector3d::UnitZ()) * tar;
+        Vector dir_wf = Eigen::AngleAxisd(-yaw, Eigen::Vector3d::UnitZ()) * direction;
         std::ostringstream oss;
-        oss << tar_wf.x() << " " << tar_wf.y() << " " << tar_wf.z() << std::endl;
+        oss << dir_wf.x() << " " << dir_wf.y() << " " << dir_wf.z() << std::endl;
         status_pub.send(Message("control_direction", oss.str()));
         
         //TODO: implement a time lib function
