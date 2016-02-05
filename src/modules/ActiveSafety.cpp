@@ -58,7 +58,7 @@ void ActiveSafety::update(){
     if(gradient.norm() > _max_velocity) gradient *= _max_velocity/gradient.norm();
         
     //set gradient and forward to controller
-    _controller_interface->setVelocity(gradient);
+    _controller_interface->setVelocity(gradient, _active_safety_interface->getControlFlags());
     _direction_gradient = gradient;
     
     //enable the active safety interface which has is now properly started up

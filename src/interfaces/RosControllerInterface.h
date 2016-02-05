@@ -27,6 +27,10 @@ public:
     
     /* NOTE: ARCHITECTURE FUNCTION */
     void setVelocity(Vector);
+    void setVelocity(Vector vel, uint32_t){
+        //ignore flags
+        setVelocity(vel);
+    }
 private:
     void update_position(const px4::vehicle_local_position &pt); 
     

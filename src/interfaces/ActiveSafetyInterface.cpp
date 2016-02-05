@@ -30,7 +30,9 @@ void ActiveSafetyInterface::update(){
         
                 if(msg.getType() == "position"){
                     double x, y, z;
-                    msg.getStream() >> x >> y >> z;
+                    uint32_t fls;
+                    msg.getStream() >> x >> y >> z >> fls;
+                    setControlFlags(fls);
                     setTargetPosition(Point(x, y, z));
                     std::cout << "Set position to (" << x << "," << y << "," << z << ")" << std::endl;
                     //std::exit(0);

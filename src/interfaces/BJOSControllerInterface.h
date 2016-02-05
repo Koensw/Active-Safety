@@ -34,7 +34,11 @@ public:
     
     /* NOTE: ARCHITECTURE FUNCTION */
     void setVelocity(Vector vel){
-        _controller->setTargetVelocityCF(vel);
+        setVelocity(vel, 0xffffffff);
+    }
+    void setVelocity(Vector vel, uint32_t flags){
+        //TODO: protect here for invalid flags...
+        _controller->setTargetCF(SET_TARGET_VELOCITY & flags,Vector(),Vector(), vel, Vector(0,0,0));
     }
 private:
     FlightController *_controller;

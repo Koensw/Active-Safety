@@ -17,6 +17,7 @@ public:
     //FIXME: should do this in local frame ?
     //FIXME: we should set the velocities instead
     virtual void setVelocity(Vector) = 0;
+    virtual void setVelocity(Vector, uint32_t flags) = 0;
     
     /* Gets the current position from the controller */
     virtual Point getPosition() = 0;

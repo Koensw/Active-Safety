@@ -3,6 +3,8 @@
 
 #include <bjos/libs/log.h>
 #include <bjos/libs/geometry.h>
+#include <bjos/controllers/FlightController.h> //FIXME: not portable?
+
 #include <bjcomm/poller.h>
 
 #include <boost/thread.hpp>
@@ -35,6 +37,13 @@ public:
         return _target; 
     }
     
+    void setControlFlags(uint32_t flags){
+        _flags = flags;
+    }
+    uint32_t getControlFlags(){
+        return _flags;
+    }
+    
     /* Sets the global strength of the repulsion */
     /* NOTE: ARCHITECTURE FUNCTION */
     void setGlobalRepulsionStrength(double repulsion_strength){
@@ -60,6 +69,8 @@ private:
     Point _target;
     double _global_repulsion_strength;
     double _minimum_range;
+    
+    uint32_t _flags;
     
     boost::thread _thrd;
     std::atomic_bool _thrd_running;
