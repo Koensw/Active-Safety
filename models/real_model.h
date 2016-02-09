@@ -24,8 +24,8 @@ std::vector<SonarInfo> getSonarModel(){
     sonar1.pose.position.x() = 0.0;
     sonar1.pose.position.y() = 0.0;
     sonar1.pose.position.z() = 0.0;
-    sonar1.pose.orientation.p() = 0;
-    sonar1.pose.orientation.y() = 1.57079632679;
+    sonar1.pose.orientation.pitch() = 0;
+    sonar1.pose.orientation.yaw() = 1.57079632679;
     sonars.push_back(sonar1);
     
     SonarInfo sonar2;
@@ -33,8 +33,8 @@ std::vector<SonarInfo> getSonarModel(){
     sonar2.pose.position.x() = 0.0;
     sonar2.pose.position.y() = 0.0;
     sonar2.pose.position.z() = 0.0;
-    sonar2.pose.orientation.p() = 0;
-    sonar2.pose.orientation.y() = 0;
+    sonar2.pose.orientation.pitch() = 0;
+    sonar2.pose.orientation.yaw() = 0;
     sonars.push_back(sonar2);
     
     SonarInfo sonar3;
@@ -42,8 +42,8 @@ std::vector<SonarInfo> getSonarModel(){
     sonar3.pose.position.x() = 0.0;
     sonar3.pose.position.y() = 0.0;
     sonar3.pose.position.z() = 0.0;
-    sonar3.pose.orientation.p() = 0;
-    sonar3.pose.orientation.y() = -1.57079632679;
+    sonar3.pose.orientation.pitch() = 0;
+    sonar3.pose.orientation.yaw() = -1.57079632679;
     sonars.push_back(sonar3);
     
     return sonars;

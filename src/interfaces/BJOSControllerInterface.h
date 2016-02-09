@@ -28,7 +28,7 @@ public:
         return _controller->getPositionWF();
     }
     double getYaw(){
-        return _controller->getOrientationWF().y();
+        return _controller->getOrientationWF().z();
         //return 0;
     }
     
