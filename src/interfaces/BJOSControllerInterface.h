@@ -37,7 +37,6 @@ public:
         setVelocity(vel, 0xffffffff);
     }
     void setVelocity(Vector vel, uint32_t flags){
-        printf("%d\n", flags);
         //TODO: protect here for invalid flags...
         _controller->setTargetCF(SET_TARGET_VELOCITY & flags,Vector(),Vector(), vel, Vector(0,0,0));
     }
