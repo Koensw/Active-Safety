@@ -5,7 +5,7 @@
 
 using namespace bjcomm;
 
-ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(1), _minimum_range(0){
+ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(1), _minimum_range(0), _flags(SET_TARGET_VELOCITY){
     _thrd = boost::thread(&ActiveSafetyInterface::update, this);    
 }
 
@@ -32,7 +32,7 @@ void ActiveSafetyInterface::update(){
                     double x, y, z;
                     uint32_t fls;
                     msg.getStream() >> x >> y >> z >> fls;
-                    setControlFlags(fls);
+                    if(fls) setControlFlags(fls);
                     setTargetPosition(Point(x, y, z));
                     std::cout << "Set position to (" << x << "," << y << "," << z << ")" << std::endl;
                     //std::exit(0);
