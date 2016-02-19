@@ -44,7 +44,7 @@ void ActiveSafety::update(){
     
     //make the attractive potential
     //FIXME: configure near space behaviour
-    Potential target_pot(relative_target, new QuadraticLinearPotentialFunction(1), _target_attraction_strength);
+    Potential target_pot(relative_target, new QuadraticLinearPotentialFunction(AS_POT_TRANS_RANGE), _target_attraction_strength);
     gradient = gradient + target_pot.getGradientOrigin();
     
     //TODO: trigger the necessary events

@@ -3,6 +3,8 @@
 
 #include <list>
 
+#include "config.h"
+
 #include <bjos/libs/geometry.h>
 
 #include "helpers/Potential.h"
@@ -15,7 +17,7 @@
  */
 class NearSpaceDetector{
 public:
-    NearSpaceDetector(): _global_min_range(0) {} //default is to disable the near space
+    NearSpaceDetector(): _global_min_range(NS_MIN_RANGE) {} //default is to disable the near space
     NearSpaceDetector(double global_min_range): _global_min_range(global_min_range) {};
     
     /* Register and unregister a sensor in the space

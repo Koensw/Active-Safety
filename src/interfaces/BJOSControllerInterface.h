@@ -29,7 +29,6 @@ public:
     }
     double getYaw(){
         return _controller->getOrientationWF().z();
-        //return 0;
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */

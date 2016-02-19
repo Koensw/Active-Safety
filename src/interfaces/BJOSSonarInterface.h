@@ -1,16 +1,16 @@
 #ifndef _BLUEJAY_BJOS_SONAR_INTERFACE_H_
 #define _BLUEJAY_BJOS_SONAR_INTERFACE_H_
 
-#include <bjos/controllers/SonarController.h>
-
 #include "interfaces/SonarInterface.h"
+
+#include <bjos/controllers/SonarController.h>
 
 /* 
  * Base class for sonar interfaces that use real physical sonars
  */
 
 //TODO: not threadsafe currently
-class BJOSSonarInterface : public SonarInterface{
+class BJOSSonarInterface : public ::SonarInterface{
 public:
     BJOSSonarInterface(bjos::SonarController *controller, int id):
         _controller(controller), _id(id) 

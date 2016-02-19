@@ -1,6 +1,8 @@
 #ifndef _BLUEJAY_ACTIVE_SAFETY_H_
 #define _BLUEJAY_ACTIVE_SAFETY_H_
 
+#include "config.h"
+
 #include <bjos/libs/geometry.h>
 
 #include "modules/NearSpaceDetector.h"
@@ -14,7 +16,7 @@ class ActiveSafety{
 public:
     ActiveSafety(NearSpaceDetector *near_space_detector, ControllerInterface *controller_interface, ActiveSafetyInterface *active_safety_interface): 
     _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), 
-    _target_attraction_strength(1), _max_velocity(1e6), _min_velocity_xy(0), _min_velocity_z(0) {};
+    _target_attraction_strength(AS_ATTR_STRENGTH), _max_velocity(AS_MAX_VELOCITY), _min_velocity_xy(AS_MIN_VELOCITY_XY), _min_velocity_z(AS_MIN_VELOCITY_Z) {};
     
     /* Set global range */
     void setGlobalMinimumDistance(double distance){

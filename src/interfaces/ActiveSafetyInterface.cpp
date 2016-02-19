@@ -1,11 +1,13 @@
 #include "ActiveSafetyInterface.h"
 
+#include "config.h"
+
 #include <boost/thread.hpp>
 #include <bjcomm/subscriber.h>
 
 using namespace bjcomm;
 
-ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(1), _minimum_range(0), _flags(SET_TARGET_VELOCITY){
+ActiveSafetyInterface::ActiveSafetyInterface(): _global_repulsion_strength(AS_REP_STRENGTH), _minimum_range(AS_MIN_RANGE), _flags(AS_CTRL_FLAGS){
     _thrd = boost::thread(&ActiveSafetyInterface::update, this);    
 }
 
@@ -14,9 +16,9 @@ void ActiveSafetyInterface::update(){
         Subscriber sub("modules/active_safety");
         bool ret = sub.start();
         if(!ret) {
-		Log::error("ActiveSafetyInterface", "Failed to load communication");
-		return;
-	}
+            Log::error("ActiveSafetyInterface", "Failed to load communication");
+            return;
+        }
                 
         int SUBSCRIBER = _poller.add(&sub);
         while(true){
