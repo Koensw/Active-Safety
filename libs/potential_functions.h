@@ -65,7 +65,7 @@ public:
     
     double getValue(double r){
         if(r < _transition_range) return 1/(2*_transition_range)*r*r;
-        else return r-1/(2*_transition_range);
+        else return r-1/2.0*_transition_range;
     }
     double getGradient(double r){
         if(r < _transition_range) return 1/(_transition_range)*r;

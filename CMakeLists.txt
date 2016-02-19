@@ -76,3 +76,6 @@ else()
     target_link_libraries(active_safety bjos bjcomm zmq ${Boost_LIBRARIES} rt pthread)
 endif()
 
+add_executable(test_potentials 
+    tests/test_potentials.cpp
+)
