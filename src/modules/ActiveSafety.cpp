@@ -50,8 +50,7 @@ void ActiveSafety::update(){
     //TODO: trigger the necessary events
     
     //set velocity zero if under minimum velocity (triggers position hold on pixhawk)
-    if(fabs(gradient.x()) < _min_velocity_xy) gradient.x() = 0;
-    if(fabs(gradient.y()) < _min_velocity_xy) gradient.y() = 0;
+    if(fabs(std::sqrt(gradient.x()*gradient.x() + gradient.y()*gradient.y())) < _min_velocity_xy) gradient.x() = gradient.y() = 0;
     if(fabs(gradient.z()) < _min_velocity_z) gradient.z() = 0;
     
     //limit maximum velocity
