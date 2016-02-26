@@ -6,15 +6,15 @@
 #include "modules/NearSpaceDetector.h"
 #include "helpers/Potential.h"
 
-void ActiveSafety::setMinimumDistanceInRange(double, double, double, double){
+void ActiveSafety::setMinimumDistanceInRange(double, double, double, double) {
     Log::fatal("ActiveSafety", "ActiveSafety::setMinimumDistanceInRange not implemented yet!");
 }
 
-void ActiveSafety::setRepulsionStrengthInRange(double, double, double, double){
+void ActiveSafety::setRepulsionStrengthInRange(double, double, double, double) {
     Log::fatal("ActiveSafety", "ActiveSafety::setRepulsionStrengthInRange not implemented yet!");
 }
 
-void ActiveSafety::update(){
+void ActiveSafety::update() {
     //sync the near space minimum distance with the safety interface options
     _near_space_detector->setGlobalMinimumDistance(_active_safety_interface->getGlobalMinimumDistance());
     
@@ -28,7 +28,7 @@ void ActiveSafety::update(){
     //get all potentials
     Vector gradient = {0, 0, 0};
     std::list<Potential> potentials = _near_space_detector->getPotentials();
-    for(std::list<Potential>::iterator pot_iter = potentials.begin(); pot_iter != potentials.end(); ++pot_iter){
+    for(std::list<Potential>::iterator pot_iter = potentials.begin(); pot_iter != potentials.end(); ++pot_iter) {
         //TODO: check if in range
         //set repulsion strength (TODO: local strength)
         pot_iter->setStrength(getGlobalRepulsionStrength());
@@ -37,7 +37,9 @@ void ActiveSafety::update(){
     }
     
     //convert the target to local frame
-    Point relative_target = getTargetPoint() - current_position;
+    Point relative_target = Point(0, 0, 0);
+    if (!_active_safety_interface->hold_position())
+        relative_target = getTargetPoint() - current_position;
     //convert the target to body frame
     RotationMatrix rot(current_yaw, 'z');
     relative_target = rot * relative_target;
@@ -64,7 +66,7 @@ void ActiveSafety::update(){
     _active_safety_interface->set_available(true);
 }
 
-/*Point ActiveSafety::getDestination(){    
+/*Point ActiveSafety::getDestination() {    
     Vector direction = _direction_gradient;
     
     //direction.normalize();
@@ -73,11 +75,11 @@ void ActiveSafety::update(){
     return direction;
 }*/
 
-Vector ActiveSafety::getDirection(){
+Vector ActiveSafety::getDirection() {
     return _direction_gradient;
 }
 
 /*//WARNING: difference between this and function above depends on frame (see header)
-Vector ActiveSafety::getAggressiveness(){
+Vector ActiveSafety::getAggressiveness() {
     return Vector();
 }*/

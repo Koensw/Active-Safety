@@ -12,51 +12,51 @@
 /*
  * Active safety controller that builds a safe flight path for the controller without bumping into objects
  */
-class ActiveSafety{
+class ActiveSafety {
 public:
     ActiveSafety(NearSpaceDetector *near_space_detector, ControllerInterface *controller_interface, ActiveSafetyInterface *active_safety_interface): 
     _near_space_detector(near_space_detector), _controller_interface(controller_interface), _active_safety_interface(active_safety_interface), 
     _target_attraction_strength(AS_ATTR_STRENGTH), _max_velocity(AS_MAX_VELOCITY), _min_velocity_xy(AS_MIN_VELOCITY_XY), _min_velocity_z(AS_MIN_VELOCITY_Z) {};
     
     /* Set global range */
-    void setGlobalMinimumDistance(double distance){
+    void setGlobalMinimumDistance(double distance) {
         _active_safety_interface->setGlobalMinimumDistance(distance);
     }
-    double getGlobalMinimumDistance(){
+    double getGlobalMinimumDistance() {
         return _near_space_detector->getGlobalMinimumDistance();
     }
     /* Set repulsion and target attraction */
-    void setGlobalRepulsionStrength(double repulsion_strength){
+    void setGlobalRepulsionStrength(double repulsion_strength) {
         _active_safety_interface->setGlobalRepulsionStrength(repulsion_strength);
     }
-    double getGlobalRepulsionStrength(){
+    double getGlobalRepulsionStrength() {
         return _active_safety_interface->getGlobalRepulsionStrength();
     }
-    void setTargetAttractionStrength(double attraction_strength){
+    void setTargetAttractionStrength(double attraction_strength) {
         _target_attraction_strength = attraction_strength;
     }
-    double getTargetAttractionStrength(){
+    double getTargetAttractionStrength() {
         return _target_attraction_strength;
     }
     /* Set maximum velocity */
-    void setMaximumVelocity(double velo){
+    void setMaximumVelocity(double velo) {
         _max_velocity = velo;
     }
-    double getMaximumVelocity(){
+    double getMaximumVelocity() {
         return _max_velocity;
     }
     
     /* Set minimum velocity for xy and z */
-    void setMinimumVelocityXY(double velo){
+    void setMinimumVelocityXY(double velo) {
         _min_velocity_xy = velo;
     }
-    double getMinimumVelocityXY(){
+    double getMinimumVelocityXY() {
         return _min_velocity_xy;
     }
-    void setMinimumVelocityZ(double velo){
+    void setMinimumVelocityZ(double velo) {
         _min_velocity_z = velo;
     }
-    double setMinimumVelocityZ(){
+    double setMinimumVelocityZ() {
         return _min_velocity_z;
     }
     
@@ -69,10 +69,11 @@ public:
     /* Get/sets target point
      WARNING: expects this in global frame
      */
-    void setTargetPoint(Point point){
+    void setTargetPoint(Point point) {
         _active_safety_interface->setTargetPosition(point);
     }
-    Point getTargetPoint(){
+
+    Point getTargetPoint() {
         return _active_safety_interface->getTargetPosition();
     }
     
@@ -92,10 +93,10 @@ public:
     //Vector getAggressiveness();
     
     /* Set radius for integrating the direction */
-    /*void setDestinationRadius(double radius){
+    /*void setDestinationRadius(double radius) {
         _integration_length = radius;
     }
-    double getDestinationRadius(){
+    double getDestinationRadius() {
         return _integration_length;
     }*/
     

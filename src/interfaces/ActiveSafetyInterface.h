@@ -9,6 +9,7 @@
 
 #include <boost/thread.hpp>
 #include <atomic>
+#include <mutex>
 
 #include "SystemInterface.h"
 
@@ -31,9 +32,11 @@ public:
     /* NOTE: ARCHITECTURE FUNCTION */
     //FIXME: should use pose instead of position
     void setTargetPosition(Point target){
+        std::lock_guard<std::mutex> lock(_target_mutex);
         _target = target;
     }
     Point getTargetPosition(){
+        std::lock_guard<std::mutex> lock(_target_mutex);
         return _target; 
     }
     
@@ -42,6 +45,10 @@ public:
     }
     uint32_t getControlFlags(){
         return _flags;
+    }
+
+    bool hold_position() {
+        return _hold;
     }
     
     /* Sets the global strength of the repulsion */
@@ -66,7 +73,10 @@ private:
     
     bjcomm::Poller _poller;
     
+    std::mutex _target_mutex;
     Point _target;
+    std::atomic_bool _hold;
+
     double _global_repulsion_strength;
     double _minimum_range;
     
