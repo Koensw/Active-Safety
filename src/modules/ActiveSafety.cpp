@@ -40,6 +40,7 @@ void ActiveSafety::update() {
     Point relative_target = Point(0, 0, 0);
     if (!_active_safety_interface->hold_position())
         relative_target = getTargetPoint() - current_position;
+    
     //convert the target to body frame
     RotationMatrix rot(current_yaw, 'z');
     relative_target = rot * relative_target;
@@ -54,6 +55,7 @@ void ActiveSafety::update() {
     //set velocity zero if under minimum velocity (triggers position hold on pixhawk)
     if(fabs(std::sqrt(gradient.x()*gradient.x() + gradient.y()*gradient.y())) < _min_velocity_xy) gradient.x() = gradient.y() = 0;
     if(fabs(gradient.z()) < _min_velocity_z) gradient.z() = 0;
+    
     
     //limit maximum velocity
     if(gradient.norm() > _max_velocity) gradient *= _max_velocity/gradient.norm();

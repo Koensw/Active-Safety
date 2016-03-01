@@ -1,5 +1,7 @@
 #include "Potential.h"
 
+#include <iostream>
+
 Vector Potential::getGradient(Point _point){
     //get distance between point and potential
     Vector vector(_point - _pos);
@@ -8,8 +10,10 @@ Vector Potential::getGradient(Point _point){
     double potential_gradient = -_potential_function->getGradient(vector.norm());
     
     //normalize and scale between vector with gradient
-    vector.normalize();
-    vector *= potential_gradient;
+    if(vector.norm() > M_EPS){
+        vector.normalize();
+        vector *= potential_gradient;
+    }
     
     //scale with potential strength
     vector *= _strength;
