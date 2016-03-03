@@ -38,7 +38,7 @@ void ActiveSafety::update() {
     
     //convert the target to local frame
     Point relative_target = Point(0, 0, 0);
-    if (!_active_safety_interface->hold_position())
+    if (!_active_safety_interface->holdEnabled())
         relative_target = getTargetPoint() - current_position;
     
     //convert the target to body frame

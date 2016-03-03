@@ -123,11 +123,11 @@ bool BJOSInit(int, char**){
 
 //run the module
 void BJOSRun(){
-    active_safety->setTargetPoint(Point(0, 0, 1));
+    active_safety->setTargetPoint(Point(2, 2, 1));
     active_safety->setGlobalRepulsionStrength(0);
     active_safety->setTargetAttractionStrength(0.4);
     
-    active_safety->setMinimumVelocityXY(0.03);
+    active_safety->setMinimumVelocityXY(0.1);
     active_safety->setMinimumVelocityZ(0.05);
     active_safety->setMaximumVelocity(1.0);
 
@@ -164,6 +164,10 @@ void BJOSRun(){
 
 //finalize the BJOS
 void BJOSFinalize(){
+    Log::info("ActiveSafetyLoader", "Switch back to hold...");
+    active_safety_interface->setHold(true);
+    active_safety->update();
+
     Log::info("ActiveSafetyLoader", "Finalizing...");
     //delete interfaces
     for(size_t i=0; i<sonar_interfaces.size(); ++i){

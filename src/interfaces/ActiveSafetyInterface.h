@@ -47,8 +47,11 @@ public:
         return _flags;
     }
 
-    bool hold_position() {
+    bool holdEnabled() {
         return _hold;
+    }
+    void setHold(bool hold){
+	_hold = hold;
     }
     
     /* Sets the global strength of the repulsion */

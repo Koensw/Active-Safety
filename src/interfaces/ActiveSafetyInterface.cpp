@@ -35,15 +35,16 @@ void ActiveSafetyInterface::update(){
                     uint32_t fls;
                     msg.getStream() >> x >> y >> z >> fls;
                     if(fls) setControlFlags(fls);
+		    else setControlFlags(AS_CTRL_FLAGS);
                     setTargetPosition(Point(x, y, z));
-                    _hold = false;
+                    setHold(false);
                     std::cout << "Set position to (" << x << "," << y << "," << z << ")" << std::endl;
                     //std::exit(0);
                 }
                 // NOTE: DONT USE THIS WHEN POSITION ESTIMATES ARE OK - THIS WILL SIMPLY GIVE (0,0,0)
                 // VELOCITY SETPOINTS SO WE CANNOT CORRECT DRIFT
                 else if (msg.getType() == "hold") {
-                    _hold = true;
+                    setHold(true);
                     setControlFlags(SET_TARGET_VELOCITY);
                 }
             }
