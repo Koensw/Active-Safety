@@ -24,6 +24,6 @@
 #define AS_CTRL_FLAGS 15815 //SET_TARGET_VELOCITY (WARNING: update with bjos FlightController)!
 
 //when quadratic lineair potential is used (default) the gap between 
-#define AS_POT_TRANS_RANGE 1
+#define AS_POT_TRANS_RANGE 3
 
 #endif

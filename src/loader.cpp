@@ -125,11 +125,11 @@ bool BJOSInit(int, char**){
 void BJOSRun(){
     active_safety->setTargetPoint(Point(2, 2, 1));
     active_safety->setGlobalRepulsionStrength(0);
-    active_safety->setTargetAttractionStrength(0.4);
+    active_safety->setTargetAttractionStrength(0.8);
     
-    active_safety->setMinimumVelocityXY(0.1);
-    active_safety->setMinimumVelocityZ(0.05);
-    active_safety->setMaximumVelocity(1.0);
+    active_safety->setMinimumVelocityXY(0.04);
+    active_safety->setMinimumVelocityZ(0.02);
+    active_safety->setMaximumVelocity(0.8);
 
     Publisher status_pub("status");
     status_pub.start();
