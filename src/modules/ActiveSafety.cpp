@@ -62,7 +62,7 @@ void ActiveSafety::update() {
             && relative_target.norm() < _active_safety_interface->getRadiusPositionMode()) posMode = true;
         
         //convert the target to body frame
-        RotationMatrix rot(current_yaw, 'z');
+        RotationMatrix rot(-current_yaw, 'z');
         relative_target = rot * relative_target;
         
         //make the attractive potential
