@@ -21,9 +21,14 @@
 #define AS_MIN_VELOCITY_Z 0
 
 //default control flags
-#define AS_CTRL_FLAGS 15815 //SET_TARGET_VELOCITY (WARNING: update with bjos FlightController)!
+#define AS_CTRL_VEL_FLAGS 15815 //SET_TARGET_VELOCITY (WARNING: update with bjos FlightController)!
+#define AS_CTRL_POS_FLAGS 15864 //SET_TARGET_POSITION (WARNING: update with bjos FlightController)!
+#define AS_CTRL_FLAGS AS_CTRL_VEL_FLAGS 
 
-//when quadratic lineair potential is used (default) the gap between 
+//the gap between when quadratic lineair potential is used (default)
 #define AS_POT_TRANS_RANGE 3
+
+//determine when to use a absolute position setpoint instead of velocity
+#define AS_POS_RADIUS 0
 
 #endif

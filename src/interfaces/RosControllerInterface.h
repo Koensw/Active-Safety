@@ -21,8 +21,9 @@ public:
     
     /* NOTE: ARCHITECTURE FUNCTION */
     void setPosition(Point);
-    Point getPosition(){
-        return _current_position;
+    void setPosition(Vector vel, uint32_t){
+        //ignore flags
+        setPosition(vel):
     }
     
     /* NOTE: ARCHITECTURE FUNCTION */
@@ -30,6 +31,13 @@ public:
     void setVelocity(Vector vel, uint32_t){
         //ignore flags
         setVelocity(vel);
+    }
+    
+    Point getPosition(){
+        return _current_position;
+    }
+    bool hasWF(){
+        return true;
     }
 private:
     void update_position(const px4::vehicle_local_position &pt); 

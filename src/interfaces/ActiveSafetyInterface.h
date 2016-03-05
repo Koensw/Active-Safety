@@ -32,15 +32,16 @@ public:
     /* NOTE: ARCHITECTURE FUNCTION */
     //FIXME: should use pose instead of position
     void setTargetPosition(Point target){
-        std::lock_guard<std::mutex> lock(_target_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
         _target = target;
     }
     Point getTargetPosition(){
-        std::lock_guard<std::mutex> lock(_target_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
         return _target; 
     }
     
     void setControlFlags(uint32_t flags){
+        std::lock_guard<std::mutex> lock(_mutex);
         _flags = flags;
     }
     uint32_t getControlFlags(){
@@ -51,37 +52,53 @@ public:
         return _hold;
     }
     void setHold(bool hold){
-	_hold = hold;
+        std::lock_guard<std::mutex> lock(_mutex);
+        _hold = hold;
     }
     
     /* Sets the global strength of the repulsion */
     /* NOTE: ARCHITECTURE FUNCTION */
     void setGlobalRepulsionStrength(double repulsion_strength){
+        std::lock_guard<std::mutex> lock(_mutex);
         _global_repulsion_strength = repulsion_strength;
     }
     double getGlobalRepulsionStrength(){
+        std::lock_guard<std::mutex> lock(_mutex);
         return _global_repulsion_strength;
     }
     
     /* Sets the global strength of the repulsion */
     /* NOTE: ARCHITECTURE FUNCTION */
     void setGlobalMinimumDistance(double minimum_range){
+        std::lock_guard<std::mutex> lock(_mutex);
         _minimum_range = minimum_range;
     }
     double getGlobalMinimumDistance(){
+        std::lock_guard<std::mutex> lock(_mutex);
         return _minimum_range;
+    }
+    
+    /* Sets the radius where in position mode is used instead of velocity control whenever possible */
+    void setRadiusPositionMode(double radius){
+        std::lock_guard<std::mutex> lock(_mutex);
+        _position_radius = radius;
+    }
+    double getRadiusPositionMode(){
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _position_radius;
     }
 private:
     void update();
     
     bjcomm::Poller _poller;
     
-    std::mutex _target_mutex;
+    std::mutex _mutex;
     Point _target;
     std::atomic_bool _hold;
 
     double _global_repulsion_strength;
     double _minimum_range;
+    double _position_radius;
     
     uint32_t _flags;
     

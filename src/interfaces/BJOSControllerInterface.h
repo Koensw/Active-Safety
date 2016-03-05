@@ -1,6 +1,8 @@
 #ifndef _BLUEJAY_BJOS_CONTROLLER_INTERFACE_H_
 #define _BLUEJAY_BJOS_CONTROLLER_INTERFACE_H_
 
+#include "config.h"
+
 #include <bjos/libs/geometry.h>
 
 #include <bjos/controllers/FlightController.h>
@@ -20,24 +22,32 @@ public:
         set_available(true);
     }
     
-    /* NOTE: ARCHITECTURE FUNCTION */
-    void setPosition(Point){
-        //return - TODO: not yet implemented
+    void setPosition(Vector pos){
+        setPosition(pos, 0xffffffff);
     }
-    Point getPosition(){
-        return _controller->getPositionWF();
+    void setPosition(Vector pos, uint32_t flags){
+        //FIXME: protect here for invalid flags
+        _controller->setTargetWF(AS_CTRL_POS_FLAGS & flags, pos, 0, 0);
     }
+    
     double getYaw(){
         return _controller->getOrientationWF().z();
     }
     
-    /* NOTE: ARCHITECTURE FUNCTION */
     void setVelocity(Vector vel){
         setVelocity(vel, 0xffffffff);
     }
     void setVelocity(Vector vel, uint32_t flags){
         //TODO: protect here for invalid flags...
-        _controller->setTargetCF(SET_TARGET_VELOCITY & flags,Vector(),Vector(), vel, Vector(0,0,0));
+        _controller->setTargetCF(AS_CTRL_VEL_FLAGS & flags, Vector(), Vector(), vel, Vector(0,0,0));
+    }
+    
+    Point getPosition(){
+        return _controller->getPositionWF();
+    }
+    
+    bool hasWF(){
+        return _controller->isWFDefined();
     }
 private:
     FlightController *_controller;

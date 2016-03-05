@@ -46,6 +46,14 @@ public:
         return _max_velocity;
     }
     
+    /* Set an absolute position in this mode wehn no external potentials triggered */
+    void setRadiusPositionMode(double radius){
+        _active_safety_interface->setRadiusPositionMode(radius);
+    }
+    double getRadiusPositionMode(){
+        return _active_safety_interface->getRadiusPositionMode();
+    }
+    
     /* Set minimum velocity for xy and z */
     void setMinimumVelocityXY(double velo) {
         _min_velocity_xy = velo;
@@ -85,12 +93,7 @@ public:
     Vector getDirection();
     
     /* Set position */
-    void setPose();
-    
-    /* Get repulsion strength 
-     ALERT: not yet known how to use this, possibly not needed at all
-     */
-    //Vector getAggressiveness();
+    //void setPose();
     
     /* Set radius for integrating the direction */
     /*void setDestinationRadius(double radius) {
