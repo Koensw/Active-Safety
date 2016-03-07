@@ -127,11 +127,11 @@ void BJOSRun(){
     active_safety->setGlobalRepulsionStrength(0);
     active_safety->setTargetAttractionStrength(0.8);
     
-    active_safety->setMinimumVelocityXY(0.04);
-    active_safety->setMinimumVelocityZ(0.02);
+    active_safety->setMinimumVelocityXY(0.00);
+    active_safety->setMinimumVelocityZ(0.00);
     active_safety->setMaximumVelocity(0.8);
 
-    active_safety->setRadiusPositionMode(5);
+    active_safety->setRadiusPositionMode(100);
     
     Publisher status_pub("status");
     status_pub.start();

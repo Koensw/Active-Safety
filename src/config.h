@@ -20,7 +20,13 @@
 #define AS_MIN_VELOCITY_XY 0
 #define AS_MIN_VELOCITY_Z 0
 
-//default control flags
+//minimum altitude for safe in-air state, below this we should enforce a (goto) land (and above disallow takeoff)
+#define AS_MIN_SAFE_ALT 0.2 
+
+////default BJOS control flags 
+#define AS_CTRL_FLAG_IGN_LAND (1 << 13)
+#define AS_CTRL_FLAG_IGN_TAKEOFF (1 << 12)
+#define AS_CTRL_LAND_FLAGS 11719//SET_TARGET_LAND     (WARNING: update with bjos FlightController)!
 #define AS_CTRL_VEL_FLAGS 15815 //SET_TARGET_VELOCITY (WARNING: update with bjos FlightController)!
 #define AS_CTRL_POS_FLAGS 15864 //SET_TARGET_POSITION (WARNING: update with bjos FlightController)!
 #define AS_CTRL_FLAGS AS_CTRL_VEL_FLAGS 
