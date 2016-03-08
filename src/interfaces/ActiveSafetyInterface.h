@@ -45,16 +45,32 @@ public:
         _flags = flags;
     }
     uint32_t getControlFlags(){
+        std::lock_guard<std::mutex> lock(_mutex);
         return _flags;
     }
 
     bool holdEnabled() {
+        std::lock_guard<std::mutex> lock(_mutex);
         return _hold;
     }
     void setHold(bool hold){
         std::lock_guard<std::mutex> lock(_mutex);
         _hold = hold;
     }
+    
+    //FIXME: should be properly integrated in to target
+    void setTargetHeading(double hdg){
+        std::lock_guard<std::mutex> lock(_mutex);
+        _heading = hdg;
+    }
+    double getTargetHeading(){
+        return _heading;
+    }
+    bool headingEnabled(){
+        std::lock_guard<std::mutex> lock(_mutex);
+        return std::isfinite(_heading);
+    }
+    //FIXME: end
     
     /* Sets the global strength of the repulsion */
     /* NOTE: ARCHITECTURE FUNCTION */
@@ -95,6 +111,9 @@ private:
     std::mutex _mutex;
     Point _target;
     std::atomic_bool _hold;
+    
+    //FIXME: this should be part of the target (not a separate mode)
+    double _heading;
 
     double _global_repulsion_strength;
     double _minimum_range;

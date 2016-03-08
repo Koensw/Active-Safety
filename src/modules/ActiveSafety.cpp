@@ -25,16 +25,27 @@ void ActiveSafety::update() {
     
     //set default gradient to zero
     Vector gradient = {0, 0, 0};
+    
+    //handle (emergency) hold mode
     if(_active_safety_interface->holdEnabled()){
         //set gradient and forward to controller
         _controller_interface->setVelocity(gradient, AS_CTRL_VEL_FLAGS);
         _direction_gradient = gradient;
     
-        //enable the active safety interface which has is now properly started up
         _active_safety_interface->set_available(true);
         return;
     }
-       
+    
+    //handle heading setpoint
+    //FIXME: currently this enforces a hold setpoint at the same time, there is no support yet for rotating while flying (because this can be difficult...)
+    if(_active_safety_interface->headingEnabled()){
+        //set gradient and forward to controller
+        _controller_interface->setYaw(_active_safety_interface->getTargetHeading());
+        _direction_gradient = gradient;
+        
+        _active_safety_interface->set_available(true);
+        return;
+    }
     
     //get the last position of the controller
     Point current_position = _controller_interface->getPosition();

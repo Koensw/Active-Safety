@@ -26,9 +26,10 @@
 ////default BJOS control flags 
 #define AS_CTRL_FLAG_IGN_LAND (1 << 12)
 #define AS_CTRL_FLAG_IGN_TAKEOFF (1 << 13)
-#define AS_CTRL_LAND_FLAGS 11719//SET_TARGET_LAND     (WARNING: update with bjos FlightController)!
-#define AS_CTRL_VEL_FLAGS 15815 //SET_TARGET_VELOCITY (WARNING: update with bjos FlightController)!
-#define AS_CTRL_POS_FLAGS 15864 //SET_TARGET_POSITION (WARNING: update with bjos FlightController)!
+#define AS_CTRL_LAND_FLAGS 11719//SET_TARGET_LAND      (WARNING: update with bjos FlightController)!
+#define AS_CTRL_VEL_FLAGS 15815 //SET_TARGET_VELOCITY  (WARNING: update with bjos FlightController)!
+#define AS_CTRL_POS_FLAGS 15864 //SET_TARGET_POSITION  (WARNING: update with bjos FlightController)!
+#define AS_CTRL_YAW_FLAGS 14847 //SET_TARGET_YAW_ANGLE (WARNING: update with bjos FlightController)!
 #define AS_CTRL_FLAGS AS_CTRL_VEL_FLAGS 
 
 //the gap between when quadratic lineair potential is used (default)

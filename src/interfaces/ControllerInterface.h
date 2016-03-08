@@ -23,6 +23,9 @@ public:
     
     /* Check if the controller has a defined world frame */
     virtual bool hasWF() = 0;
+    
+    //TEMPORARY (FIXME)
+    virtual void setYaw(double) {}
 };
 
 #endif
