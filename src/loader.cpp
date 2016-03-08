@@ -127,8 +127,8 @@ void BJOSRun(){
     active_safety->setGlobalRepulsionStrength(0);
     active_safety->setTargetAttractionStrength(0.8);
     
-    active_safety->setMinimumVelocityXY(0.00);
-    active_safety->setMinimumVelocityZ(0.00);
+    active_safety->setMinimumVelocityXY(0.05);
+    active_safety->setMinimumVelocityZ(0.08);
     active_safety->setMaximumVelocity(0.8);
 
     active_safety->setRadiusPositionMode(100);
