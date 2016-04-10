@@ -21,7 +21,7 @@
 #define AS_MIN_VELOCITY_Z 0
 
 //minimum altitude for safe in-air state, below this we should enforce a (goto) land (and above disallow takeoff)
-#define AS_MIN_SAFE_ALT 0.2 
+#define AS_MIN_SAFE_ALT 0.3
 
 ////default BJOS control flags 
 #define AS_CTRL_FLAG_IGN_LAND (1 << 12)
