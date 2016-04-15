@@ -26,6 +26,7 @@ public:
     
     //TEMPORARY (FIXME)
     virtual void setYaw(double) {}
+    virtual void setYaw(Vector, double) {}
 };
 
 #endif

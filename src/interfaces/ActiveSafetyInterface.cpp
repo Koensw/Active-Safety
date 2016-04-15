@@ -9,7 +9,7 @@
 
 using namespace bjcomm;
 
-ActiveSafetyInterface::ActiveSafetyInterface(): _target(NAN, NAN, NAN), _global_repulsion_strength(AS_REP_STRENGTH), _minimum_range(AS_MIN_RANGE), 
+ActiveSafetyInterface::ActiveSafetyInterface(): _target(NAN, NAN, NAN), _hold(false), _heading(NAN), _global_repulsion_strength(AS_REP_STRENGTH), _minimum_range(AS_MIN_RANGE), 
 _position_radius(AS_POS_RADIUS), _flags(AS_CTRL_FLAGS) {
     _thrd = boost::thread(&ActiveSafetyInterface::update, this);    
 }

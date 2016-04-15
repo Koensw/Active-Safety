@@ -44,6 +44,10 @@ public:
         _controller->setTargetCF(AS_CTRL_VEL_FLAGS & AS_CTRL_YAW_FLAGS, {0, 0, 0}, yaw, 0);
     }
     
+    void setYaw(Vector pos, double yaw){
+        _controller->setTargetWF(AS_CTRL_POS_FLAGS & AS_CTRL_YAW_FLAGS, pos, yaw, 0);
+    }
+    
     Point getPosition(){
         return _controller->getPositionWF();
     }
