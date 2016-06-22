@@ -73,7 +73,6 @@ bool BJOSInit(int, char**){
     sonar_controller = new SonarController();
     if(!bjos->getController("sonar", sonar_controller)){
         Log::warn("ActiveSafetyLoader", "Current loader does not have sonar controller, not loading sonars!");
-        return false;
     }else{
         //load the sensor model
         std::vector<SonarData> sonar_data = sonar_controller->getData();
@@ -153,9 +152,9 @@ void BJOSRun(){
         
         //get direction where flying to
         Vector direction = active_safety->getDirection();
-        Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x(), cur.y(), cur.z(), yaw, direction.x(), direction.y(), direction.z());
+        //Log::info("ActiveSafetyLoader", "Position %f %f %f %f --- Direction %f %f %f", cur.x(), cur.y(), cur.z(), yaw, direction.x(), direction.y(), direction.z());
         Point tar = active_safety->getTargetPoint();
-        Log::info("ActiveSafetyLoader", "Target %f %f %f", tar.x(), tar.y(), tar.z());
+        //Log::info("ActiveSafetyLoader", "Target %f %f %f", tar.x(), tar.y(), tar.z());
         
         Vector dir_wf = Eigen::AngleAxisd(-yaw, Eigen::Vector3d::UnitZ()) * direction;
         std::ostringstream oss;
@@ -163,7 +162,7 @@ void BJOSRun(){
         status_pub.send(Message("control_direction", oss.str()));
         
         //TODO: implement a time lib function
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 

@@ -32,7 +32,7 @@ void ActiveSafetyInterface::update(){
             if(_poller.hasMsg(SUBSCRIBER)){
                 Message msg;
                 msg = sub.receive();
-                
+                                
                 if(msg.getType() == "position"){
                     double x, y, z;
                     uint32_t fls;
@@ -56,6 +56,11 @@ void ActiveSafetyInterface::update(){
                      setHold(false);
                      setTargetPosition(Vector(NAN, NAN, NAN));
                      setTargetHeading(y);
+                }else if(msg.getType() == "setting"){
+                    std::string type;
+                    double value;
+                    msg.getStream() >> type >> value;
+                    if(type == "repulse-range") setGlobalMinimumDistance(value);
                 }
             }
         }
