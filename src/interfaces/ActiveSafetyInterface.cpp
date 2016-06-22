@@ -60,7 +60,10 @@ void ActiveSafetyInterface::update(){
                     std::string type;
                     double value;
                     msg.getStream() >> type >> value;
-                    if(type == "repulse-range") setGlobalMinimumDistance(value);
+                    if(type == "repulse-range") {
+                        Log::info("ActiveSafetyInterface", "Setting global minimum repulse range to %f", value);
+                        setGlobalMinimumDistance(value);
+                    }
                 }
             }
         }
