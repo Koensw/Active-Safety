@@ -72,17 +72,16 @@ void NearSpaceDetector::update(){
     for(std::list<DistanceSensor*>::iterator sen_iter = _sensors.begin(); sen_iter != _sensors.end(); ++sen_iter){
         //retrieve local sensor potentials
         std::list<Potential> sensor_potentials = (*sen_iter)->getPotentials();
-
+                
         //goto each potential and move them to correct location in body frame
         //remove all that are out of global range now
         for(std::list<Potential>::iterator pot_iter = sensor_potentials.begin(); pot_iter != sensor_potentials.end();){
-            //rotate the potential to align the sensor and the body frame
-            //DEBUG: std::cout << pot_iter->getPosition().x << " " << pot_iter->getPosition().y << " " << pot_iter->getPosition().z << std::endl;
-            pot_iter->rotate(RotationMatrix::getTaitBryan(-(*sen_iter)->getPose().orientation));
+            //rotate the potential to align the sensor and the body frame        
+            pot_iter->rotate(RotationMatrix::getTaitBryan((*sen_iter)->getPose().orientation));
             
             //translate the potential frame to the body frame
             pot_iter->translate((*sen_iter)->getPose().position);
-            
+                        
             //check if we keep this potential or that is out of range now
             if(pot_iter->getPosition().norm() > _global_min_range) pot_iter = sensor_potentials.erase(pot_iter);
             else ++pot_iter;

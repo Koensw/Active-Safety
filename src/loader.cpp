@@ -70,23 +70,23 @@ bool BJOSInit(int, char**){
     near_space_detector = new NearSpaceDetector();
     
     //retrieve the sonar controller
-    /*sonar_controller = new SonarController();
+    sonar_controller = new SonarController();
     if(!bjos->getController("sonar", sonar_controller)){
-        Log::error("ActiveSafetyLoader", "Cannot continue, current loader does not have sonar controller!");
+        Log::warn("ActiveSafetyLoader", "Current loader does not have sonar controller, not loading sonars!");
         return false;
+    }else{
+        //load the sensor model
+        std::vector<SonarData> sonar_data = sonar_controller->getData();
+        for(size_t i=0; i<sonar_data.size(); ++i){
+            //create interface
+            BJOSSonarInterface *sonar_interface = new BJOSSonarInterface(sonar_controller, sonar_data[i].id);
+            sonar_interfaces.push_back(sonar_interface);
+            
+            //creates a sensor and register it
+            SonarSensor *sonar_sensor = new SonarSensor(sonar_data[i].pose, sonar_interface);
+            near_space_detector->registerSensor(sonar_sensor);
+        }
     }
-    
-    //load the sensor model
-    std::vector<SonarData> sonar_data = sonar_controller->getData();
-    for(size_t i=0; i<sonar_data.size(); ++i){
-        //create interface
-        BJOSSonarInterface *sonar_interface = new BJOSSonarInterface(sonar_controller, sonar_data[i].id);
-        sonar_interfaces.push_back(sonar_interface);
-        
-        //creates a sensor and register it
-        SonarSensor *sonar_sensor = new SonarSensor(sonar_data[i].pose, sonar_interface);
-        near_space_detector->registerSensor(sonar_sensor);
-    }*/
     
     //retrieve the flight controller
     flight_controller = new FlightController();
@@ -124,12 +124,15 @@ bool BJOSInit(int, char**){
 //run the module
 void BJOSRun(){
     //active_safety->setTargetPoint(Point(2, 2, 1));
-    active_safety->setGlobalRepulsionStrength(0);
+    active_safety->setGlobalRepulsionStrength(0.5);
     active_safety->setTargetAttractionStrength(0.8);
     
     active_safety->setMinimumVelocityXY(0.05);
     active_safety->setMinimumVelocityZ(0.08);
     active_safety->setMaximumVelocity(0.8);
+    
+    //active_safety->setGlobalMinimumDistance(0.5);
+    //active_safety->setGlobalMinimumDistance(10);
 
     active_safety->setRadiusPositionMode(100);
     
@@ -167,10 +170,13 @@ void BJOSRun(){
 //finalize the BJOS
 void BJOSFinalize(){
     Log::info("ActiveSafetyLoader", "Switch back to hold...");
-    active_safety_interface->setHold(true);
-    active_safety->update();
+    if(active_safety && active_safety_interface){
+        active_safety_interface->setHold(true);
+        active_safety->update();
+    }
 
     Log::info("ActiveSafetyLoader", "Finalizing...");
+
     //delete interfaces
     for(size_t i=0; i<sonar_interfaces.size(); ++i){
         delete sonar_interfaces[i];
@@ -179,7 +185,6 @@ void BJOSFinalize(){
     delete active_safety_interface;
     
     //delete bjos controllers
-   // delete sonar_controller;
     delete flight_controller;
     delete sonar_controller;
 

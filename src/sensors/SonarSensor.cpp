@@ -23,6 +23,7 @@ std::list<Potential> SonarSensor::getPotentials(){
     //add it to the single element list
     std::list<Potential> pots;
     pots.push_back(pot);
+    
     return pots;
 }
 
